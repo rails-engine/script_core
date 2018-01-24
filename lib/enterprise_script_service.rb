@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require("forwardable")
 require("msgpack")
 require("open3")
 require("pathname")
@@ -13,42 +14,17 @@ require("enterprise_script_service/service_channel")
 require("enterprise_script_service/service_process")
 require("enterprise_script_service/spawner")
 require("enterprise_script_service/stat")
+require("enterprise_script_service/executable")
 
 module EnterpriseScriptService
   class << self
-    def run(input:, sources:, instructions: nil, timeout: 1, instruction_quota: 100_000, instruction_quota_start: 0, memory_quota: 8 << 20)
-      packer = EnterpriseScriptService::Protocol.packer_factory.packer
+    extend Forwardable
 
-      payload = {input: input, sources: sources}
-      payload[:library] = instructions if instructions
-      encoded = packer.pack(payload)
-
-      packer = EnterpriseScriptService::Protocol.packer_factory.packer
-      size = packer.pack(encoded.size)
-
-      spawner = EnterpriseScriptService::Spawner.new
-      service_process = EnterpriseScriptService::ServiceProcess.new(
-        service_path,
-        spawner,
-        instruction_quota,
-        instruction_quota_start,
-        memory_quota
-      )
-      runner = EnterpriseScriptService::Runner.new(
-        timeout: timeout,
-        service_process: service_process,
-        message_processor_factory: EnterpriseScriptService::MessageProcessor
-      )
-      runner.run(size, encoded)
+    DEFAULT_EXECUTABLE_PATH = Pathname.new(__dir__).parent.join("bin/enterprise_script_service").to_s
+    def default_executable
+      @default_executable ||= EnterpriseScriptService::Executable.new DEFAULT_EXECUTABLE_PATH
     end
 
-    private
-
-    def service_path
-      @service_path ||= begin
-        base_path = Pathname.new(__dir__).parent
-        base_path.join("bin/enterprise_script_service").to_s
-      end
-    end
+    def_delegator :default_executable, :run
   end
 end

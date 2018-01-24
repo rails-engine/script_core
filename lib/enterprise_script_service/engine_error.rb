@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 module EnterpriseScriptService
+  class ExecutableNotFound < IOError
+    attr_reader :executable_path
+
+    def initialize(executable_path)
+      @executable_path = executable_path
+    end
+  end
+
   # one to rule them all
   EngineError = Class.new(StandardError)
 
