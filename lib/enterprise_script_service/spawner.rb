@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EnterpriseScriptService
   class Spawner
     def spawn(*)
@@ -5,9 +7,10 @@ module EnterpriseScriptService
     end
 
     def wait(pid, flags = 0)
-      pid, status = Process.wait2(pid, flags)
+      _pid, status = Process.wait2(pid, flags)
 
-      status && if status.signaled?
+      return unless status
+      if status.signaled?
         255 + status.termsig
       else
         status.exitstatus

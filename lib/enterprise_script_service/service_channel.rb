@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EnterpriseScriptService
   class ServiceChannel
     attr_reader(:in_writer, :out_reader)

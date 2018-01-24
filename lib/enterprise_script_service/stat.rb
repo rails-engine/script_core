@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EnterpriseScriptService
   Stat = Struct.new(:instructions, :memory, :bytes_in, :time, :total_instructions) do
     def initialize(options)
@@ -10,6 +12,6 @@ module EnterpriseScriptService
     memory: 0,
     bytes_in: 0,
     time: 0,
-    total_instructions: 0,
+    total_instructions: 0
   )
 end

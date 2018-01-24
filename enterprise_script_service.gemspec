@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "pathname"
 
 lib = File.expand_path("../lib", __FILE__)
@@ -13,23 +15,23 @@ Gem::Specification.new do |spec|
   spec.authors = ["Simon Génier"]
   spec.email = "simon.genier@shopify.com"
   spec.files = begin
-  submodules =
-    %x(git submodule status --recursive).split("\n").map do |submodule|
-      submodule.split(/\(|\s+/)[2]
-    end.compact
+    submodules =
+      `git submodule status --recursive`.split("\n").map do |submodule|
+        submodule.split(/\(|\s+/)[2]
+      end.compact
 
-  list_tracked_files = lambda do |dir|
-    Dir.chdir(Pathname.new(__FILE__).dirname.join(dir)) do
-      %x(git ls-files -z).split("\x0").map do |file|
-        Pathname.new(dir).join(file).to_s
+    list_tracked_files = lambda do |dir|
+      Dir.chdir(Pathname.new(__FILE__).dirname.join(dir)) do
+        `git ls-files -z`.split("\x0").map do |file|
+          Pathname.new(dir).join(file).to_s
+        end
       end
     end
-  end
 
-  list_tracked_files.call(".") + submodules.flat_map do |submodule|
-    list_tracked_files.call(submodule)
+    list_tracked_files.call(".") + submodules.flat_map do |submodule|
+      list_tracked_files.call(submodule)
+    end
   end
-end
 
   spec.extensions = ["ext/enterprise_script_service/Rakefile"]
   spec.homepage = "https://github.com/Shopify/enterprise-script-service"

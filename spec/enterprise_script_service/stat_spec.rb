@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe(EnterpriseScriptService::Stat) do
   let(:null_stat) { EnterpriseScriptService::Stat::Null }
 
@@ -11,5 +13,4 @@ RSpec.describe(EnterpriseScriptService::Stat) do
     default_values = {instructions: 0, memory: 0, bytes_in: 0, time: 0, total_instructions: 0}
     expect(null_stat).to have_attributes(default_values)
   end
-
 end

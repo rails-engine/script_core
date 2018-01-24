@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require("msgpack")
 require("open3")
 require("pathname")
@@ -14,7 +16,7 @@ require("enterprise_script_service/stat")
 
 module EnterpriseScriptService
   class << self
-    def run(input:, sources:, instructions: nil, timeout: 1, instruction_quota: 100000, instruction_quota_start: 0, memory_quota: 8 << 20)
+    def run(input:, sources:, instructions: nil, timeout: 1, instruction_quota: 100_000, instruction_quota_start: 0, memory_quota: 8 << 20)
       packer = EnterpriseScriptService::Protocol.packer_factory.packer
 
       payload = {input: input, sources: sources}
@@ -30,12 +32,12 @@ module EnterpriseScriptService
         spawner,
         instruction_quota,
         instruction_quota_start,
-        memory_quota,
+        memory_quota
       )
       runner = EnterpriseScriptService::Runner.new(
         timeout: timeout,
         service_process: service_process,
-        message_processor_factory: EnterpriseScriptService::MessageProcessor,
+        message_processor_factory: EnterpriseScriptService::MessageProcessor
       )
       runner.run(size, encoded)
     end
@@ -45,7 +47,7 @@ module EnterpriseScriptService
     def service_path
       @service_path ||= begin
         base_path = Pathname.new(__dir__).parent
-        base_path.join("bin/enterprise_script_service".freeze).to_s
+        base_path.join("bin/enterprise_script_service").to_s
       end
     end
   end

@@ -1,49 +1,47 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-require 'pathname'
+require "pathname"
 
-OUT_OF_MEMORY_EXPECTED = %w(212971.rb 212983.rb 219293.rb 227322.rb 239195.rb 240894.rb)
+OUT_OF_MEMORY_EXPECTED = %w[212971.rb 212983.rb 219293.rb 227322.rb 239195.rb 240894.rb].freeze
 
 def expected_result?(file)
-  return true if $?.success?
-  return true if $?.exitstatus == 1
-  return true if OUT_OF_MEMORY_EXPECTED.include?(file) && $?.termsig == 9
+  return true if $CHILD_STATUS.success?
+  return true if $CHILD_STATUS.exitstatus == 1
+  return true if OUT_OF_MEMORY_EXPECTED.include?(file) && $CHILD_STATUS.termsig == 9
   false
 end
 
 pwd = Pathname.new(__FILE__).dirname
-mruby = pwd.join('../ext/enterprise_script_service/mruby/bin/mruby').to_s
-testdir = pwd.join('../tests/regression')
+mruby = pwd.join("../ext/enterprise_script_service/mruby/bin/mruby").to_s
+testdir = pwd.join("../tests/regression")
 
 failures = false
 
 Dir.entries(testdir).sort.each do |file|
   filepath = testdir.join(file)
-  if File.file?(filepath)
-    cmd = "#{mruby} #{filepath}"
-    system(cmd)
+  next unless File.file?(filepath)
+  cmd = "#{mruby} #{filepath}"
+  system(cmd)
 
-    if expected_result?(file)
-      puts "#{file}: all good."
+  if expected_result?(file)
+    puts "#{file}: all good."
+  else
+    failures = true
+
+    if $CHILD_STATUS.stopped?
+      puts "#{file}: Stopped (#{$CHILD_STATUS.stopsig})"
+    elsif $CHILD_STATUS.signaled?
+      puts "#{file}: Signaled (#{$CHILD_STATUS.termsig})"
+    elsif $CHILD_STATUS.exited?
+      puts "#{file}: Exited (#{$CHILD_STATUS.exitstatus})"
     else
-      failures = true
-
-      if $?.stopped?
-        puts "#{file}: Stopped (#{$?.stopsig})"
-      elsif $?.signaled?
-        puts "#{file}: Signaled (#{$?.termsig})"
-      elsif $?.exited?
-        puts "#{file}: Exited (#{$?.exitstatus})"
-      else
-        puts "#{file}: unknown term signal: #{$?.methods} (#{$?})"
-      end
+      puts "#{file}: unknown term signal: #{$CHILD_STATUS.methods} (#{$CHILD_STATUS})"
     end
   end
 end
 
-if failures
-  raise "Regression tests failed"
-else
-  puts
-  puts "Regression tests succeeded"
-end
+raise "Regression tests failed" if failures
+
+puts
+puts "Regression tests succeeded"

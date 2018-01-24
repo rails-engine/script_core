@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EnterpriseScriptService
   # one to rule them all
   EngineError = Class.new(StandardError)
@@ -46,7 +48,7 @@ module EnterpriseScriptService
   EngineStackExhaustedError = Class.new(EngineQuotaError) # unused?
 
   class EngineTimeQuotaError < EngineQuotaError
-    def initialize(quota:) 
+    def initialize(quota:)
       super("Timed out after #{quota}")
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EnterpriseScriptService
   class ServiceProcess
     attr_reader(:path, :spawner, :instruction_quota, :instruction_quota_start, :memory_quota)
@@ -21,7 +23,7 @@ module EnterpriseScriptService
         "-m", memory_quota.to_s,
         in: in_reader,
         out: out_writer,
-        unsetenv_others: true,
+        unsetenv_others: true
       )
 
       in_reader.close
@@ -38,7 +40,7 @@ module EnterpriseScriptService
             spawner.kill(9, pid)
             spawner.wait(pid)
           rescue Errno::ESRCH
-            code = -1
+            -1
           end
         end
 

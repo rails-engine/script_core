@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EnterpriseScriptService
   class MessageProcessor
     def initialize
@@ -29,10 +31,10 @@ module EnterpriseScriptService
 
     def signal_signaled(signal)
       error = case signal
-      when 31
-        EnterpriseScriptService::EngineIllegalSyscallError.new
-      else
-        EnterpriseScriptService::EngineSignaledError.new(signal: signal)
+              when 31
+                EnterpriseScriptService::EngineIllegalSyscallError.new
+              else
+                EnterpriseScriptService::EngineSignaledError.new(signal: signal)
       end
 
       signal_error(error)
@@ -40,18 +42,18 @@ module EnterpriseScriptService
 
     def signal_abnormal_exit(code)
       error = case code
-      when 8
-        EnterpriseScriptService::ArithmeticOverflowError.new
-      when 9
-        EnterpriseScriptService::UnknownTypeError.new
-      when 16
-        EnterpriseScriptService::EngineMemoryQuotaError.new
-      when 17
-        EnterpriseScriptService::EngineInstructionQuotaError.new
-      when 19
-        EnterpriseScriptService::EngineTypeError.new
-      else
-        EnterpriseScriptService::EngineAbnormalExitError.new(code: code)
+              when 8
+                EnterpriseScriptService::ArithmeticOverflowError.new
+              when 9
+                EnterpriseScriptService::UnknownTypeError.new
+              when 16
+                EnterpriseScriptService::EngineMemoryQuotaError.new
+              when 17
+                EnterpriseScriptService::EngineInstructionQuotaError.new
+              when 19
+                EnterpriseScriptService::EngineTypeError.new
+              else
+                EnterpriseScriptService::EngineAbnormalExitError.new(code: code)
       end
 
       signal_error(error)
@@ -63,7 +65,7 @@ module EnterpriseScriptService
         stdout: @stdout,
         stat: @stat,
         errors: @errors,
-        measurements: @measurements,
+        measurements: @measurements
       )
     end
 
@@ -90,14 +92,14 @@ module EnterpriseScriptService
         when :runtime
           EngineRuntimeError.new(
             data[:message],
-            guest_backtrace: data[:backtrace],
+            guest_backtrace: data[:backtrace]
           )
         when :syntax
           EngineSyntaxError.new(
             data[:message],
             filename: data[:filename],
             line_number: data[:line_number],
-            column: data[:column],
+            column: data[:column]
           )
         when :unknown_type
           EngineUnknownTypeError.new(type: data[:type])
@@ -110,7 +112,7 @@ module EnterpriseScriptService
 
     def read_measurement(data)
       name, microseconds = *data
-      if @measurements.has_key?(name) 
+      if @measurements.key?(name)
         @measurements[name] += microseconds
       else
         @measurements[name] = microseconds
@@ -118,9 +120,11 @@ module EnterpriseScriptService
     end
 
     def read_stat(data)
-      @errors << EnterpriseScriptService::DuplicateMessageError.new(
-        "duplicate stat message",
-      ) unless @stat == EnterpriseScriptService::Stat::Null
+      unless @stat == EnterpriseScriptService::Stat::Null
+        @errors << EnterpriseScriptService::DuplicateMessageError.new(
+          "duplicate stat message"
+        )
+      end
       @stat = EnterpriseScriptService::Stat.new(data)
     end
   end

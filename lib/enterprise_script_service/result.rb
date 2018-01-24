@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EnterpriseScriptService
   Result = Struct.new(:output, :stdout, :stat, :measurements, :errors) do
     def initialize(output:, stdout:, stat:, measurements:, errors:)

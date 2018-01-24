@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe(EnterpriseScriptService::Runner) do
   let(:result) { instance_double(EnterpriseScriptService::Result) }
 
@@ -28,7 +30,7 @@ RSpec.describe(EnterpriseScriptService::Runner) do
       EnterpriseScriptService::Runner.new(
         timeout: 10,
         service_process: service_process,
-        message_processor_factory: message_processor_factory,
+        message_processor_factory: message_processor_factory
       )
     end
 
@@ -81,7 +83,7 @@ RSpec.describe(EnterpriseScriptService::Runner) do
       EnterpriseScriptService::Runner.new(
         timeout: 0.01,
         service_process: service_process,
-        message_processor_factory: message_processor_factory,
+        message_processor_factory: message_processor_factory
       )
     end
 
@@ -90,7 +92,7 @@ RSpec.describe(EnterpriseScriptService::Runner) do
       allow(message_processor).to receive(:process_all)
 
       expect(message_processor).to receive(:signal_error).once.with(
-        EnterpriseScriptService::EngineTimeQuotaError.new(quota: 0.01),
+        EnterpriseScriptService::EngineTimeQuotaError.new(quota: 0.01)
       )
       expect(runner.run("hello")).to be(result)
     end
@@ -100,7 +102,7 @@ RSpec.describe(EnterpriseScriptService::Runner) do
       allow(message_processor).to receive(:process_all) { sleep(1) }
 
       expect(message_processor).to receive(:signal_error).once.with(
-        EnterpriseScriptService::EngineTimeQuotaError.new(quota: 0.01),
+        EnterpriseScriptService::EngineTimeQuotaError.new(quota: 0.01)
       )
       expect(runner.run("hello")).to be(result)
     end

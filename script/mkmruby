@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require "pathname"
 require "rake"
@@ -17,12 +18,12 @@ MESSAGE
 
 def within_mruby
   Dir.chdir(MRUBY_DIR) do
-    original_mruby_config = ENV['MRUBY_CONFIG']
+    original_mruby_config = ENV["MRUBY_CONFIG"]
     begin
-      ENV['MRUBY_CONFIG'] = '../mruby_config.rb'
+      ENV["MRUBY_CONFIG"] = "../mruby_config.rb"
       yield
     ensure
-      ENV['MRUBY_CONFIG'] = original_mruby_config
+      ENV["MRUBY_CONFIG"] = original_mruby_config
     end
   end
 end

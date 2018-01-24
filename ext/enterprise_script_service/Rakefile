@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require("pathname")
 require_relative("./flags")
 
@@ -17,7 +19,7 @@ SERVICE_EXECUTABLE_DIR = ROOT.join("bin")
 SERVICE_EXECUTABLE = SERVICE_EXECUTABLE_DIR.join("enterprise_script_service").to_s
 SERVICE_SOURCES = Dir.glob("*.cpp").map(&:to_s)
 Dir.chdir("#{ROOT}/tests") do
-  SERVICE_TESTS = Dir.glob("*_test.cpp").map { |f| "#{Dir.pwd}/#{f.to_s}"}
+  SERVICE_TESTS = Dir.glob("*_test.cpp").map { |f| "#{Dir.pwd}/#{f}" }
   GOOGLE_TEST_DIR = "#{Dir.pwd}/googletest/googletest"
   SERVICE_TESTS << "#{GOOGLE_TEST_DIR}/src/gtest-all.cc"
   SERVICE_TESTS << "#{GOOGLE_TEST_DIR}/src/gtest_main.cc"
@@ -30,26 +32,26 @@ MRUBY_LIB = MRUBY_LIB_DIR.join("libmruby.a")
 LIBSECCOMP_DIR = Pathname.new(__dir__).join("libseccomp")
 LIBSECCOMP_LIB_DIR = LIBSECCOMP_DIR.join("src/.libs")
 
-CXX = ENV['CXX'] || 'g++'
+CXX = ENV["CXX"] || "g++"
 
-if RUBY_PLATFORM =~ /linux/
-  LIBSECCOMP_CFLAGS = [
+LIBSECCOMP_CFLAGS = if RUBY_PLATFORM =~ /linux/
+  [
     "-Ilibseccomp/include",
     "-L#{LIBSECCOMP_LIB_DIR}",
-    "-lseccomp",
-  ]
+    "-lseccomp"
+  ].freeze
 else
-  LIBSECCOMP_CFLAGS = []
+  [].freeze
 end
 
 directory(SERVICE_EXECUTABLE_DIR)
 
 file(SERVICE_EXECUTABLE => [
-  SERVICE_EXECUTABLE_DIR,
-  *SERVICE_SOURCES,
-  __FILE__,
-  MRUBY_LIB,
-]) do
+       SERVICE_EXECUTABLE_DIR,
+       *SERVICE_SOURCES,
+       __FILE__,
+       MRUBY_LIB
+     ]) do
   sh(
     CXX,
     "--std=c++11",
@@ -63,19 +65,19 @@ file(SERVICE_EXECUTABLE => [
     "-o", SERVICE_EXECUTABLE,
     *SERVICE_SOURCES,
     "-lmruby",
-    *LIBSECCOMP_CFLAGS,
+    *LIBSECCOMP_CFLAGS
   )
 end
 
-SERVICE_SOURCES_NO_MAIN = SERVICE_SOURCES.select { |f| f != "ext.cpp"}
+SERVICE_SOURCES_NO_MAIN = SERVICE_SOURCES.reject { |f| f == "ext.cpp" }
 
 file(SERVICE_TESTS_EXECUTABLE => [
-  SERVICE_EXECUTABLE_DIR,
-  *SERVICE_SOURCES_NO_MAIN,
-  *SERVICE_TESTS,
-  __FILE__,
-  MRUBY_LIB,
-]) do
+       SERVICE_EXECUTABLE_DIR,
+       *SERVICE_SOURCES_NO_MAIN,
+       *SERVICE_TESTS,
+       __FILE__,
+       MRUBY_LIB
+     ]) do
   sh(
     CXX,
     "--std=c++11",
@@ -94,17 +96,17 @@ file(SERVICE_TESTS_EXECUTABLE => [
     *SERVICE_TESTS,
     "-lmruby",
     "-lpthread",
-    *LIBSECCOMP_CFLAGS,
+    *LIBSECCOMP_CFLAGS
   )
 end
 
-file(MRUBY_LIB => [:"mruby:compile", :"libseccomp:compile"])
+file(MRUBY_LIB => %i[mruby:compile libseccomp:compile])
 
-task(clean: [:"mruby:mrproper", :"libseccomp:mrproper"]) do
+task(clean: %i[mruby:mrproper libseccomp:mrproper]) do
   sh("rm", SERVICE_EXECUTABLE)
 end
 
-task(mrproper: [:clean, :"mruby:mrproper", :"libseccomp:mrproper"])
+task(mrproper: %i[clean mruby:mrproper libseccomp:mrproper])
 
 task(default: [SERVICE_EXECUTABLE, :test])
 
@@ -115,12 +117,12 @@ end
 namespace(:mruby) do
   def within_mruby
     Dir.chdir(MRUBY_DIR) do
-      original_mruby_config = ENV['MRUBY_CONFIG']
+      original_mruby_config = ENV["MRUBY_CONFIG"]
       begin
-        ENV['MRUBY_CONFIG'] = '../mruby_config.rb'
+        ENV["MRUBY_CONFIG"] = "../mruby_config.rb"
         yield
       ensure
-        ENV['MRUBY_CONFIG'] = original_mruby_config
+        ENV["MRUBY_CONFIG"] = original_mruby_config
       end
     end
   end

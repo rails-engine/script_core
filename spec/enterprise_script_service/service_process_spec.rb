@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe(EnterpriseScriptService::ServiceProcess) do
   let(:pid) { rand(1 << 16) }
   let(:service_path) { "bin/my-subprocess" }
@@ -11,7 +13,7 @@ RSpec.describe(EnterpriseScriptService::ServiceProcess) do
   end
 
   let(:service_process) do
-    EnterpriseScriptService::ServiceProcess.new(service_path, spawner, 100000, 2, 4 << 20)
+    EnterpriseScriptService::ServiceProcess.new(service_path, spawner, 100_000, 2, 4 << 20)
   end
 
   it "creates a channel to communicate with the subprocess" do
@@ -39,7 +41,7 @@ RSpec.describe(EnterpriseScriptService::ServiceProcess) do
 
   it "open passes arguments to process" do
     expect(spawner)
-      .to receive(:spawn).once.with(instance_of(String), "-i", 100000.to_s, "-C", 2.to_s, "-m", (4 << 20).to_s, instance_of(Hash))
+      .to receive(:spawn).once.with(instance_of(String), "-i", 100_000.to_s, "-C", 2.to_s, "-m", (4 << 20).to_s, instance_of(Hash))
     service_process.open do |c|
     end
   end
@@ -48,7 +50,7 @@ RSpec.describe(EnterpriseScriptService::ServiceProcess) do
     expect(spawner)
       .to receive(:wait).once.with(pid, Process::WNOHANG).and_return(0)
     expect(spawner).to receive(:wait).never
-    expect(service_process.open { }).to eq(0)
+    expect(service_process.open {}).to eq(0)
   end
 
   it "optimistically tries to wait on the child without killing when raising" do
@@ -64,7 +66,7 @@ RSpec.describe(EnterpriseScriptService::ServiceProcess) do
     expect(spawner).to receive(:kill).once.with(9, pid)
     expect(spawner)
       .to receive(:wait).once.with(pid).and_return(0)
-    expect(service_process.open { }).to eq(0)
+    expect(service_process.open {}).to eq(0)
   end
 
   it "kills the child process if it has not terminated when raising" do
@@ -80,6 +82,6 @@ RSpec.describe(EnterpriseScriptService::ServiceProcess) do
     expect(spawner)
       .to receive(:wait).once.with(pid, Process::WNOHANG).and_return(nil)
     expect(spawner).to receive(:kill).once.with(9, pid).and_raise(Errno::ESRCH)
-    expect(service_process.open { }).to eq(-1)
+    expect(service_process.open {}).to eq(-1)
   end
 end

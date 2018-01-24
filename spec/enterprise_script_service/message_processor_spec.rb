@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe(EnterpriseScriptService::MessageProcessor) do
   let(:message_processor) { EnterpriseScriptService::MessageProcessor.new }
 
@@ -5,10 +7,10 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
 
   it "processes an output message" do
     io = StringIO.new(packer.pack([
-      :output,
-      extracted: {dog: "fine"},
-      stdout: "hello",
-    ]))
+                                    :output,
+                                    extracted: {dog: "fine"},
+                                    stdout: "hello"
+                                  ]))
 
     message_processor.process_all(io)
     expect(message_processor.to_result).to eq(
@@ -17,23 +19,23 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
         stdout: "hello",
         stat: EnterpriseScriptService::Stat::Null,
         errors: [],
-        measurements: {},
-      ),
+        measurements: {}
+      )
     )
   end
 
   it "processes a runtime error message" do
     io = StringIO.new(packer.pack([
-      :error,
-      __type: :runtime,
-      message: "oops",
-      backtrace: ["oops.rb:1:5"],
-    ]))
+                                    :error,
+                                    __type: :runtime,
+                                    message: "oops",
+                                    backtrace: ["oops.rb:1:5"]
+                                  ]))
 
     message_processor.process_all(io)
     result = message_processor.to_result
     error = EnterpriseScriptService::EngineRuntimeError.new(
-      "oops", guest_backtrace: ["oops.rb:1:5"],
+      "oops", guest_backtrace: ["oops.rb:1:5"]
     )
     expect(result).to eq(
       EnterpriseScriptService::Result.new(
@@ -41,21 +43,21 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
         stdout: "",
         stat: EnterpriseScriptService::Stat::Null,
         errors: [error],
-        measurements: {},
-      ),
+        measurements: {}
+      )
     )
     expect(result.errors.first.guest_backtrace).to eq(error.guest_backtrace)
   end
 
   it "processes a runtime error message" do
     io = StringIO.new(packer.pack([
-      :error,
-      __type: :syntax,
-      message: "unexpected keyword end",
-      filename: "syntax_error.rb",
-      line_number: 3,
-      column: 40,
-    ]))
+                                    :error,
+                                    __type: :syntax,
+                                    message: "unexpected keyword end",
+                                    filename: "syntax_error.rb",
+                                    line_number: 3,
+                                    column: 40
+                                  ]))
 
     message_processor.process_all(io)
     result = message_processor.to_result
@@ -63,7 +65,7 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
       "unexpected keyword end",
       filename: "syntax_error.rb",
       line_number: 3,
-      column: 40,
+      column: 40
     )
     expect(result).to eq(
       EnterpriseScriptService::Result.new(
@@ -71,8 +73,8 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
         stdout: "",
         stat: EnterpriseScriptService::Stat::Null,
         errors: [error],
-        measurements: {},
-      ),
+        measurements: {}
+      )
     )
     expect(result.errors.first.filename).to eq(error.filename)
     expect(result.errors.first.line_number).to eq(error.line_number)
@@ -81,10 +83,10 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
 
   it "processes an unknown type error" do
     io = StringIO.new(packer.pack([
-      :error,
-      __type: :unknown_type,
-      type: 9,
-    ]))
+                                    :error,
+                                    __type: :unknown_type,
+                                    type: 9
+                                  ]))
 
     message_processor.process_all(io)
     result = message_processor.to_result
@@ -95,17 +97,17 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
         stdout: "",
         stat: EnterpriseScriptService::Stat::Null,
         errors: [error],
-        measurements: {},
-      ),
+        measurements: {}
+      )
     )
   end
 
   it "processes an unknown ext error" do
     io = StringIO.new(packer.pack([
-      :error,
-      __type: :unknown_ext,
-      type: 1,
-    ]))
+                                    :error,
+                                    __type: :unknown_ext,
+                                    type: 1
+                                  ]))
 
     message_processor.process_all(io)
     result = message_processor.to_result
@@ -116,22 +118,22 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
         stdout: "",
         stat: EnterpriseScriptService::Stat::Null,
         errors: [error],
-        measurements: {},
-      ),
+        measurements: {}
+      )
     )
   end
 
   it "processes an unknown error" do
     io = StringIO.new(packer.pack([
-      :error,
-      __type: :lol,
-      message: "yolo",
-    ]))
+                                    :error,
+                                    __type: :lol,
+                                    message: "yolo"
+                                  ]))
 
     message_processor.process_all(io)
     result = message_processor.to_result
     error = EnterpriseScriptService::EngineInternalError.new(
-      %(unknown error: #{{__type: :lol, message: "yolo"}})
+      %(unknown error: {:__type=>:lol, :message=>"yolo"})
     )
     expect(result).to eq(
       EnterpriseScriptService::Result.new(
@@ -139,16 +141,16 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
         stdout: "",
         stat: EnterpriseScriptService::Stat::Null,
         errors: [error],
-        measurements: {},
-      ),
+        measurements: {}
+      )
     )
   end
 
   it "reads a measurement" do
     io = StringIO.new(packer.pack([
-      :measurement,
-      [:transmogrification, 14],
-    ]))
+                                    :measurement,
+                                    [:transmogrification, 14]
+                                  ]))
 
     message_processor.process_all(io)
     result = message_processor.to_result
@@ -158,20 +160,20 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
         stdout: "",
         stat: EnterpriseScriptService::Stat::Null,
         errors: [],
-        measurements: {transmogrification: 14},
-      ),
+        measurements: {transmogrification: 14}
+      )
     )
   end
 
   it "adds up measurements" do
     io = StringIO.new(packer.pack([
-      :measurement,
-      [:transmogrification, 14],
-    ]))
+                                    :measurement,
+                                    [:transmogrification, 14]
+                                  ]))
     io << packer.pack([
-      :measurement,
-      [:transmogrification, 12],
-    ])
+                        :measurement,
+                        [:transmogrification, 12]
+                      ])
     io.rewind
 
     message_processor.process_all(io)
@@ -182,17 +184,17 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
         stdout: "",
         stat: EnterpriseScriptService::Stat::Null,
         errors: [],
-        measurements: {transmogrification: 26},
-      ),
+        measurements: {transmogrification: 26}
+      )
     )
   end
 
   it "reads stats" do
     io = StringIO.new(packer.pack([
-      :stat,
-      instructions: 12345,
-      memory: 2334,
-    ]))
+                                    :stat,
+                                    instructions: 12_345,
+                                    memory: 2334
+                                  ]))
 
     message_processor.process_all(io)
     result = message_processor.to_result
@@ -201,12 +203,12 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
         output: nil,
         stdout: "",
         stat: EnterpriseScriptService::Stat.new(
-          instructions: 12345,
-          memory: 2334,
+          instructions: 12_345,
+          memory: 2334
         ),
         errors: [],
-        measurements: {},
-      ),
+        measurements: {}
+      )
     )
   end
 
@@ -216,8 +218,8 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
       errors = message_processor.to_result.errors
 
       expect(errors).to eq([
-        EnterpriseScriptService::UnknownTypeError.new,
-      ])
+                             EnterpriseScriptService::UnknownTypeError.new
+                           ])
     end
 
     it "returns an EngineMemoryQuotaError when called with code 16" do
@@ -225,8 +227,8 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
       errors = message_processor.to_result.errors
 
       expect(errors).to eq([
-        EnterpriseScriptService::EngineMemoryQuotaError.new,
-      ])
+                             EnterpriseScriptService::EngineMemoryQuotaError.new
+                           ])
     end
 
     it "returns an EngineInstructionQuotaError when called with code 17" do
@@ -234,8 +236,8 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
       errors = message_processor.to_result.errors
 
       expect(errors).to eq([
-        EnterpriseScriptService::EngineInstructionQuotaError.new,
-      ])
+                             EnterpriseScriptService::EngineInstructionQuotaError.new
+                           ])
     end
 
     it "returns an EngineAbnormalExitError for an unspecific code" do
@@ -243,8 +245,8 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
       errors = message_processor.to_result.errors
 
       expect(errors).to eq([
-        EnterpriseScriptService::EngineAbnormalExitError.new(code: 123),
-      ])
+                             EnterpriseScriptService::EngineAbnormalExitError.new(code: 123)
+                           ])
     end
   end
 
@@ -254,8 +256,8 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
       errors = message_processor.to_result.errors
 
       expect(errors).to eq([
-        EnterpriseScriptService::EngineIllegalSyscallError.new,
-      ])
+                             EnterpriseScriptService::EngineIllegalSyscallError.new
+                           ])
       expect(errors[0]).to be_kind_of(EnterpriseScriptService::EngineSignaledError)
       expect(errors[0].signal).to eq(31)
     end
@@ -265,8 +267,8 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
       errors = message_processor.to_result.errors
 
       expect(errors).to eq([
-        EnterpriseScriptService::EngineSignaledError.new(signal: 40),
-      ])
+                             EnterpriseScriptService::EngineSignaledError.new(signal: 40)
+                           ])
     end
   end
 end

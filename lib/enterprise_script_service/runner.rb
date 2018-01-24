@@ -1,4 +1,6 @@
-require 'timeout'
+# frozen_string_literal: true
+
+require "timeout"
 
 module EnterpriseScriptService
   class Runner
@@ -16,7 +18,7 @@ module EnterpriseScriptService
       begin
         code = service_process.open do |channel|
           Timeout.timeout(timeout) do
-            data.each { |datum| channel.write(datum) } 
+            data.each { |datum| channel.write(datum) }
             message_processor.process_all(channel)
           end
         end
@@ -28,7 +30,7 @@ module EnterpriseScriptService
         end
       rescue Timeout::Error
         message_processor.signal_error(
-          EnterpriseScriptService::EngineTimeQuotaError.new(quota: timeout),
+          EnterpriseScriptService::EngineTimeQuotaError.new(quota: timeout)
         )
       end
 
