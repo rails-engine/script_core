@@ -2,7 +2,15 @@
 
 require_relative("./flags")
 
-mruby_engine_gembox_path = Pathname.new(__FILE__).dirname.join("mruby_engine")
+mruby_engine_gembox_path =
+  if ENV["MRUBY_ENGINE_GEMBOX_PATH"] && File.exist?(ENV["MRUBY_ENGINE_GEMBOX_PATH"])
+    unless ENV["MRUBY_ENGINE_GEMBOX_PATH"].end_with?(".gembox")
+      raise "`#{ENV["MRUBY_ENGINE_GEMBOX_PATH"]}` require `.gembox` extension"
+    end
+    Pathname.new ENV["MRUBY_ENGINE_GEMBOX_PATH"][0..-8]
+  else
+    Pathname.new(__FILE__).dirname.join("mruby_engine")
+  end
 
 MRuby::Build.new do |conf|
   toolchain(:gcc)
