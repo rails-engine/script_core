@@ -15,12 +15,15 @@ require("enterprise_script_service/service_process")
 require("enterprise_script_service/spawner")
 require("enterprise_script_service/stat")
 require("enterprise_script_service/executable")
+require("enterprise_script_service/engine")
 
 module EnterpriseScriptService
+  DEFAULT_BIN_PATH = Pathname.new(__dir__).parent.join("bin")
+  DEFAULT_EXECUTABLE_PATH = DEFAULT_BIN_PATH.join("enterprise_script_service")
+
   class << self
     extend Forwardable
 
-    DEFAULT_EXECUTABLE_PATH = Pathname.new(__dir__).parent.join("bin/enterprise_script_service").to_s
     def default_executable
       @default_executable ||= EnterpriseScriptService::Executable.new DEFAULT_EXECUTABLE_PATH
     end
