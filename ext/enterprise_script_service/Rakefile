@@ -32,6 +32,10 @@ Dir.chdir("#{ESS_ROOT}/tests") do
   SERVICE_TESTS_EXECUTABLE = SERVICE_EXECUTABLE_DIR.join("enterprise_script_service_tests").to_s
 end
 
+MRUBY_BIN_DIR = MRUBY_DIR.join("build/host/bin")
+MRBC_EXE = MRUBY_BIN_DIR.join("mrbc")
+MRUBY_EXE = MRUBY_BIN_DIR.join("mruby")
+
 MRUBY_LIB_DIR = MRUBY_DIR.join("build/sandbox/lib")
 MRUBY_LIB = MRUBY_LIB_DIR.join("libmruby.a")
 
@@ -73,6 +77,9 @@ file(SERVICE_EXECUTABLE => [
     "-lmruby",
     *LIBSECCOMP_CFLAGS
   )
+
+  sh("cp", MRBC_EXE.to_s, SERVICE_EXECUTABLE_DIR.to_s)
+  sh("cp", MRUBY_EXE.to_s, SERVICE_EXECUTABLE_DIR.to_s)
 end
 
 SERVICE_SOURCES_NO_MAIN = SERVICE_SOURCES.reject { |f| f == "ext.cpp" }
