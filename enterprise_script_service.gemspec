@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
   spec.extensions = ["ext/enterprise_script_service/Rakefile"]
   spec.homepage = "https://github.com/Shopify/enterprise-script-service"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 2.3"
+  spec.required_ruby_version = "~> 2.3"
 
   spec.add_dependency("msgpack", "~> 1.0")
   spec.add_development_dependency("bundler", "~> 1.6")
