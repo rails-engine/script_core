@@ -59,8 +59,8 @@ RSpec.describe(EnterpriseScriptService) do
     expect(result.stat.instructions).to eq(8)
   end
 
-  SCRIPT_SETUP_INSTRUCTION_COUNT = 17
-  INSTRUCTION_COUNT_PER_LOOP = 13 # For .times {}
+  SCRIPT_SETUP_INSTRUCTION_COUNT = 15
+  INSTRUCTION_COUNT_PER_LOOP = 13 #For .times {}
 
   def expected_instructions(loops)
     SCRIPT_SETUP_INSTRUCTION_COUNT + INSTRUCTION_COUNT_PER_LOOP * loops
