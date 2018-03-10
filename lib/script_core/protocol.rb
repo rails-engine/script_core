@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module EnterpriseScriptService
+module ScriptCore
   module Protocol
     class << self
       def packer_factory

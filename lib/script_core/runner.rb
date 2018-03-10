@@ -2,7 +2,7 @@
 
 require "timeout"
 
-module EnterpriseScriptService
+module ScriptCore
   class Runner
     attr_reader(:timeout, :service_process, :message_processor_factory)
 
@@ -30,7 +30,7 @@ module EnterpriseScriptService
         end
       rescue Timeout::Error
         message_processor.signal_error(
-          EnterpriseScriptService::EngineTimeQuotaError.new(quota: timeout)
+          ScriptCore::EngineTimeQuotaError.new(quota: timeout)
         )
       end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require("enterprise_script_service")
+require("script_core")
 require("pry")
 
 RSpec.configure do |config|

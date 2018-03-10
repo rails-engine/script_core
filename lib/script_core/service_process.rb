@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module EnterpriseScriptService
+module ScriptCore
   class ServiceProcess
     attr_reader(:path, :spawner, :instruction_quota, :instruction_quota_start, :memory_quota)
 
@@ -33,7 +33,7 @@ module EnterpriseScriptService
       out_reader.binmode
 
       begin
-        yield EnterpriseScriptService::ServiceChannel.new(in_writer, out_reader)
+        yield ScriptCore::ServiceChannel.new(in_writer, out_reader)
       ensure
         code = spawner.wait(pid, Process::WNOHANG) || begin
           begin

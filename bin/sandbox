@@ -6,7 +6,7 @@ ENV["BUNDLE_GEMFILE"] ||= File.expand_path("../../Gemfile",
 
 require "rubygems"
 require "bundler/setup"
-require "enterprise_script_service"
+require "script_core"
 
 MEMORY_QUOTA = 8 << 20
 INSTRUCTION_QUOTA = 200_000
@@ -18,7 +18,7 @@ else
   STDIN.read
 end
 
-result = EnterpriseScriptService.run(
+result = ScriptCore.run(
   input: {},
   sources: [
     ["(input)", script],

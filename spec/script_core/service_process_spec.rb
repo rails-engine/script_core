@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
-RSpec.describe(EnterpriseScriptService::ServiceProcess) do
+RSpec.describe(ScriptCore::ServiceProcess) do
   let(:pid) { rand(1 << 16) }
   let(:service_path) { "bin/my-subprocess" }
   let(:pipe_pairs) { [] }
 
   let(:spawner) do
-    spawner = instance_double(EnterpriseScriptService::Spawner)
+    spawner = instance_double(ScriptCore::Spawner)
     allow(spawner).to receive(:spawn).and_return(pid)
     allow(spawner).to receive(:wait).and_return(0)
     spawner
   end
 
   let(:service_process) do
-    EnterpriseScriptService::ServiceProcess.new(service_path, spawner, 100_000, 2, 4 << 20)
+    ScriptCore::ServiceProcess.new(service_path, spawner, 100_000, 2, 4 << 20)
   end
 
   it "creates a channel to communicate with the subprocess" do

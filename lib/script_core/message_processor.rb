@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-module EnterpriseScriptService
+module ScriptCore
   class MessageProcessor
     def initialize
       @measurements = {}
-      @stat = EnterpriseScriptService::Stat::Null
+      @stat = ScriptCore::Stat::Null
       @errors = []
       @output = nil
       @stdout = ""
     end
 
     def process_all(channel)
-      unpacker = EnterpriseScriptService::Protocol.packer_factory.unpacker(channel)
+      unpacker = ScriptCore::Protocol.packer_factory.unpacker(channel)
       begin
         unpacker.each do |raw_message|
           read(raw_message)
@@ -26,15 +26,15 @@ module EnterpriseScriptService
     end
 
     def signal_truncation
-      signal_error(EnterpriseScriptService::EngineTruncationError.new)
+      signal_error(ScriptCore::EngineTruncationError.new)
     end
 
     def signal_signaled(signal)
       error = case signal
               when 31
-                EnterpriseScriptService::EngineIllegalSyscallError.new
+                ScriptCore::EngineIllegalSyscallError.new
               else
-                EnterpriseScriptService::EngineSignaledError.new(signal: signal)
+                ScriptCore::EngineSignaledError.new(signal: signal)
       end
 
       signal_error(error)
@@ -43,24 +43,24 @@ module EnterpriseScriptService
     def signal_abnormal_exit(code)
       error = case code
               when 8
-                EnterpriseScriptService::ArithmeticOverflowError.new
+                ScriptCore::ArithmeticOverflowError.new
               when 9
-                EnterpriseScriptService::UnknownTypeError.new
+                ScriptCore::UnknownTypeError.new
               when 16
-                EnterpriseScriptService::EngineMemoryQuotaError.new
+                ScriptCore::EngineMemoryQuotaError.new
               when 17
-                EnterpriseScriptService::EngineInstructionQuotaError.new
+                ScriptCore::EngineInstructionQuotaError.new
               when 19
-                EnterpriseScriptService::EngineTypeError.new
+                ScriptCore::EngineTypeError.new
               else
-                EnterpriseScriptService::EngineAbnormalExitError.new(code: code)
+                ScriptCore::EngineAbnormalExitError.new(code: code)
       end
 
       signal_error(error)
     end
 
     def to_result
-      EnterpriseScriptService::Result.new(
+      ScriptCore::Result.new(
         output: @output,
         stdout: @stdout,
         stat: @stat,
@@ -120,12 +120,12 @@ module EnterpriseScriptService
     end
 
     def read_stat(data)
-      unless @stat == EnterpriseScriptService::Stat::Null
-        @errors << EnterpriseScriptService::DuplicateMessageError.new(
+      unless @stat == ScriptCore::Stat::Null
+        @errors << ScriptCore::DuplicateMessageError.new(
           "duplicate stat message"
         )
       end
-      @stat = EnterpriseScriptService::Stat.new(data)
+      @stat = ScriptCore::Stat.new(data)
     end
   end
 end

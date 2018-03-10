@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 # frozen_string_literal: true
 
 require "pathname"
@@ -6,15 +5,14 @@ require "pathname"
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require "enterprise_script_service/version"
+require "script_core/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "enterprise_script_service"
-  spec.version = EnterpriseScriptService::VERSION
-  spec.date = "2016-10-18"
-  spec.summary = "A service that evaluates ruby scripts in a secure way."
-  spec.authors = ["Simon Génier"]
-  spec.email = "simon.genier@shopify.com"
+  spec.name = "script_core"
+  spec.version = ScriptCore::VERSION
+  spec.summary = "A script engine powered by a mruby sandboxie, It's forked by Shopify's ESS."
+  spec.authors = ["jasl"]
+  spec.email = "jasl9187@hotmail.com"
   spec.files = begin
     submodules =
       `git submodule status --recursive`.split("\n").map do |submodule|
@@ -35,9 +33,9 @@ Gem::Specification.new do |spec|
   end
 
   spec.extensions = ["ext/enterprise_script_service/Rakefile"]
-  spec.homepage = "https://github.com/Shopify/enterprise-script-service"
+  spec.homepage = "https://github.com/jasl-lab/script_core"
   spec.license = "MIT"
-  spec.required_ruby_version = "~> 2.3"
+  spec.required_ruby_version = ">= 2.3"
 
   spec.add_dependency("msgpack", "~> 1.0")
   spec.add_development_dependency("bundler", "~> 1.6")

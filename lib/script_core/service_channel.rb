@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module EnterpriseScriptService
+module ScriptCore
   class ServiceChannel
     attr_reader(:in_writer, :out_reader)
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module EnterpriseScriptService
+module ScriptCore
   Result = Struct.new(:output, :stdout, :stat, :measurements, :errors) do
     def initialize(output:, stdout:, stat:, measurements:, errors:)
       super(output, stdout, stat, measurements, errors)

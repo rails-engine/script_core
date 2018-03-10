@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-RSpec.describe(EnterpriseScriptService::Stat) do
-  let(:null_stat) { EnterpriseScriptService::Stat::Null }
+RSpec.describe(ScriptCore::Stat) do
+  let(:null_stat) { ScriptCore::Stat::Null }
 
   it "supports all stats" do
     options = {instructions: 1, memory: 2, bytes_in: 3, time: 4, total_instructions: 5}
-    stat = EnterpriseScriptService::Stat.new(options)
+    stat = ScriptCore::Stat.new(options)
     expect(stat).to have_attributes(options)
   end
 

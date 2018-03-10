@@ -1,6 +1,7 @@
 .idea
 .vagrant
 .bundle
+*.gem
 Gemfile.lock
 tmp
 bin/enterprise_script_service

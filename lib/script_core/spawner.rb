@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module EnterpriseScriptService
+module ScriptCore
   class Spawner
     def spawn(*)
       super

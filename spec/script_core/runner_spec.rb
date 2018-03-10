@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-RSpec.describe(EnterpriseScriptService::Runner) do
-  let(:result) { instance_double(EnterpriseScriptService::Result) }
+RSpec.describe(ScriptCore::Runner) do
+  let(:result) { instance_double(ScriptCore::Result) }
 
   let(:message_processor) do
-    message_processor = instance_double(EnterpriseScriptService::MessageProcessor)
+    message_processor = instance_double(ScriptCore::MessageProcessor)
     allow(message_processor).to receive(:to_result).and_return(result)
     message_processor
   end
@@ -16,18 +16,18 @@ RSpec.describe(EnterpriseScriptService::Runner) do
   end
 
   let(:service_process) do
-    instance_double(EnterpriseScriptService::ServiceProcess)
+    instance_double(ScriptCore::ServiceProcess)
   end
 
   context "#run terminates before time is out" do
     let(:channel) do
-      channel = instance_double(EnterpriseScriptService::ServiceChannel)
+      channel = instance_double(ScriptCore::ServiceChannel)
       expect(channel).to receive(:write).once.with("hello")
       channel
     end
 
     let(:runner) do
-      EnterpriseScriptService::Runner.new(
+      ScriptCore::Runner.new(
         timeout: 10,
         service_process: service_process,
         message_processor_factory: message_processor_factory
@@ -69,7 +69,7 @@ RSpec.describe(EnterpriseScriptService::Runner) do
 
   context "#run times out" do
     let(:channel) do
-      instance_double(EnterpriseScriptService::ServiceChannel)
+      instance_double(ScriptCore::ServiceChannel)
     end
 
     before do
@@ -80,7 +80,7 @@ RSpec.describe(EnterpriseScriptService::Runner) do
     end
 
     let(:runner) do
-      EnterpriseScriptService::Runner.new(
+      ScriptCore::Runner.new(
         timeout: 0.01,
         service_process: service_process,
         message_processor_factory: message_processor_factory
@@ -92,7 +92,7 @@ RSpec.describe(EnterpriseScriptService::Runner) do
       allow(message_processor).to receive(:process_all)
 
       expect(message_processor).to receive(:signal_error).once.with(
-        EnterpriseScriptService::EngineTimeQuotaError.new(quota: 0.01)
+        ScriptCore::EngineTimeQuotaError.new(quota: 0.01)
       )
       expect(runner.run("hello")).to be(result)
     end
@@ -102,7 +102,7 @@ RSpec.describe(EnterpriseScriptService::Runner) do
       allow(message_processor).to receive(:process_all) { sleep(1) }
 
       expect(message_processor).to receive(:signal_error).once.with(
-        EnterpriseScriptService::EngineTimeQuotaError.new(quota: 0.01)
+        ScriptCore::EngineTimeQuotaError.new(quota: 0.01)
       )
       expect(runner.run("hello")).to be(result)
     end

@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-module EnterpriseScriptService
+module ScriptCore
   class Engine
     attr_accessor :timeout, :instruction_quota, :instruction_quota_start, :memory_quota, :instructions
 
-    def initialize(bin_path = EnterpriseScriptService::DEFAULT_BIN_PATH, executable_name: "enterprise_script_service",
+    def initialize(bin_path = ScriptCore::DEFAULT_BIN_PATH, executable_name: "enterprise_script_service",
                    instructions_name: "enterprise_script_service.mrb")
       raise Errno::ENOENT, "No such directory - #{bin_path}" unless File.directory?(bin_path)
       @bin_path = bin_path
 
-      @executable = EnterpriseScriptService::Executable.new(@bin_path.join(executable_name))
+      @executable = ScriptCore::Executable.new(@bin_path.join(executable_name))
       @timeout = 1
       @instruction_quota = 100_000
       @instruction_quota_start = 0

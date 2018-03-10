@@ -3,9 +3,9 @@
 require("msgpack")
 require("open3")
 
-RSpec.describe(EnterpriseScriptService) do
+RSpec.describe(ScriptCore) do
   it "evaluates a simple script" do
-    result = EnterpriseScriptService.run(
+    result = ScriptCore.run(
       input: {result: [26_803_196_617, 0.475]},
       sources: [
         ["stdout", "@stdout_buffer = 'hello'"],
@@ -19,7 +19,7 @@ RSpec.describe(EnterpriseScriptService) do
   end
 
   it "round trips binary strings" do
-    result = EnterpriseScriptService.run(
+    result = ScriptCore.run(
       input: "hello".encode(Encoding::BINARY),
       sources: [
         ["foo", "@output = @input"]
@@ -31,7 +31,7 @@ RSpec.describe(EnterpriseScriptService) do
   end
 
   it "exposes metrics" do
-    result = EnterpriseScriptService.run(
+    result = ScriptCore.run(
       input: {result: [26_803_196_617, 0.475]},
       sources: [
         ["stdout", "@stdout_buffer = 'hello'"],
@@ -48,7 +48,7 @@ RSpec.describe(EnterpriseScriptService) do
   end
 
   it "exposes stat" do
-    result = EnterpriseScriptService.run(
+    result = ScriptCore.run(
       input: {result: [26_803_196_617, 0.475]},
       sources: [
         ["stdout", "@stdout_buffer = 'hello'"],
@@ -73,7 +73,7 @@ RSpec.describe(EnterpriseScriptService) do
   it "checks that the instruction quota defaults to 100000 when no limit is given to the ESS" do
     loops = max_loops(100_000)
 
-    result = EnterpriseScriptService.run(
+    result = ScriptCore.run(
       input: {result: [26_803_196_617, 0.475]},
       sources: [
         ["stdout", "#{loops}.times {}"]
@@ -84,7 +84,7 @@ RSpec.describe(EnterpriseScriptService) do
     expect(result.success?).to be(true)
     expect(result.stat.instructions).to eq(expected_instructions(loops))
 
-    result_with_error = EnterpriseScriptService.run(
+    result_with_error = ScriptCore.run(
       input: {result: [26_803_196_617, 0.475]},
       sources: [
         ["stdout", "#{loops + 1}.times {}"]
@@ -94,14 +94,14 @@ RSpec.describe(EnterpriseScriptService) do
 
     expect(result_with_error.success?).to be(false)
     expect(result_with_error.output).to be_nil
-    expect(result_with_error.errors).to include(a_kind_of(EnterpriseScriptService::EngineInstructionQuotaError))
+    expect(result_with_error.errors).to include(a_kind_of(ScriptCore::EngineInstructionQuotaError))
   end
 
   it "checks that a given instruction quota is respected" do
     given_quota = rand(1..9_999_999)
     loops = max_loops(given_quota)
 
-    result = EnterpriseScriptService.run(
+    result = ScriptCore.run(
       input: {result: [26_803_196_617, 0.475]},
       sources: [
         ["stdout", "#{loops}.times {}"]
@@ -113,7 +113,7 @@ RSpec.describe(EnterpriseScriptService) do
     expect(result.success?).to be(true)
     expect(result.stat.instructions).to eq(expected_instructions(loops))
 
-    result_with_error = EnterpriseScriptService.run(
+    result_with_error = ScriptCore.run(
       input: {result: [26_803_196_617, 0.475]},
       sources: [
         ["stdout", "#{loops + 1}.times {}"]
@@ -124,12 +124,12 @@ RSpec.describe(EnterpriseScriptService) do
 
     expect(result_with_error.success?).to be(false)
     expect(result_with_error.output).to be_nil
-    expect(result_with_error.errors).to include(a_kind_of(EnterpriseScriptService::EngineInstructionQuotaError))
+    expect(result_with_error.errors).to include(a_kind_of(ScriptCore::EngineInstructionQuotaError))
   end
 
   it "checks that a given instruction quota is respected from a given source index" do
     quota = 15_000
-    result = EnterpriseScriptService.run(
+    result = ScriptCore.run(
       input: {result: [26_803_196_617, 0.475]},
       sources: [
         ["ignore", "1000.times {}"], # if we count this one, we'd blow the 15k quota
@@ -145,7 +145,7 @@ RSpec.describe(EnterpriseScriptService) do
   end
 
   it "supports symbols stat" do
-    result = EnterpriseScriptService.run(
+    result = ScriptCore.run(
       input: {result: {value: 0.475}},
       sources: [
         ["stdout", "@stdout_buffer = 'hello'"],
@@ -157,7 +157,7 @@ RSpec.describe(EnterpriseScriptService) do
   end
 
   it "reports syntax errors" do
-    result = EnterpriseScriptService.run(
+    result = ScriptCore.run(
       input: "Yay!",
       sources: [["syntax_error.rb", "end"]],
       timeout: 1
@@ -167,7 +167,7 @@ RSpec.describe(EnterpriseScriptService) do
     expect(result.errors).to have_attributes(length: 1)
 
     error = result.errors[0]
-    expect(error).to be_an(EnterpriseScriptService::EngineSyntaxError)
+    expect(error).to be_an(ScriptCore::EngineSyntaxError)
     expect(error.message).to eq("syntax_error.rb:1:3: syntax error, unexpected keyword_end")
     expect(error.filename).to eq("syntax_error.rb")
     expect(error.line_number).to eq(1)
@@ -175,7 +175,7 @@ RSpec.describe(EnterpriseScriptService) do
   end
 
   it "reports raised exception" do
-    result = EnterpriseScriptService.run(
+    result = ScriptCore.run(
       input: "Yay!",
       sources: [["raise.rb", <<-SOURCE]],
         def foo
@@ -191,7 +191,7 @@ RSpec.describe(EnterpriseScriptService) do
     expect(result.errors).to have_attributes(length: 1)
 
     error = result.errors[0]
-    expect(error).to be_an(EnterpriseScriptService::EngineRuntimeError)
+    expect(error).to be_an(ScriptCore::EngineRuntimeError)
     expect(error.message).to eq("foo")
     expect(error.guest_backtrace).to eq([
                                           "raise.rb:2:in foo",
@@ -200,7 +200,7 @@ RSpec.describe(EnterpriseScriptService) do
   end
 
   it "reports metrics on raised exception" do
-    result = EnterpriseScriptService.run(
+    result = ScriptCore.run(
       input: "Yay!",
       sources: [["foo", 'raise "foobar"']],
       timeout: 1
@@ -214,22 +214,22 @@ RSpec.describe(EnterpriseScriptService) do
   end
 
   it "reports an engine runtime fatal error on a bad input" do
-    result = EnterpriseScriptService.run(input: '"Yay!"', sources: "", timeout: 1)
+    result = ScriptCore.run(input: '"Yay!"', sources: "", timeout: 1)
     expect(result.success?).to be(false)
     expect(result.errors).to have_attributes(length: 1)
 
     error = result.errors[0]
-    expect(error).to be_an(EnterpriseScriptService::EngineAbnormalExitError)
+    expect(error).to be_an(ScriptCore::EngineAbnormalExitError)
     expect(error.code).to eq(2)
   end
 
   it "reports an unknown type error on a bad output" do
-    result = EnterpriseScriptService.run(input: "Yay!", sources: [["test", "@output = Class"]], timeout: 1)
+    result = ScriptCore.run(input: "Yay!", sources: [["test", "@output = Class"]], timeout: 1)
     expect(result.success?).to be(false)
     expect(result.errors).to have_attributes(length: 1)
 
     error = result.errors[0]
-    expect(error).to be_an(EnterpriseScriptService::UnknownTypeError)
+    expect(error).to be_an(ScriptCore::UnknownTypeError)
   end
 
   it "does work with a simple payload" do
@@ -244,7 +244,7 @@ RSpec.describe(EnterpriseScriptService) do
   end
 
   it "includes the stdout_buffer if it raises" do
-    result = EnterpriseScriptService.run(
+    result = ScriptCore.run(
       input: {result: [26_803_196_617, 0.475]},
       sources: [
         ["stdout", "@stdout_buffer = 'hello'"],

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-RSpec.describe(EnterpriseScriptService::ServiceChannel) do
+RSpec.describe(ScriptCore::ServiceChannel) do
   let(:writer) { instance_double(IO, "writer") }
   let(:reader) { instance_double(IO, "reader") }
   let(:service_channel) do
-    EnterpriseScriptService::ServiceChannel.new(writer, reader)
+    ScriptCore::ServiceChannel.new(writer, reader)
   end
 
   it "forwards #write to the writer" do

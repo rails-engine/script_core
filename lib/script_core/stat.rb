@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module EnterpriseScriptService
+module ScriptCore
   Stat = Struct.new(:instructions, :memory, :bytes_in, :time, :total_instructions) do
     def initialize(options)
       super(options[:instructions], options[:memory], options[:bytes_in], options[:time], options[:total_instructions])

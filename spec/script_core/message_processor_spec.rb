@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-RSpec.describe(EnterpriseScriptService::MessageProcessor) do
-  let(:message_processor) { EnterpriseScriptService::MessageProcessor.new }
+RSpec.describe(ScriptCore::MessageProcessor) do
+  let(:message_processor) { ScriptCore::MessageProcessor.new }
 
-  let(:packer) { EnterpriseScriptService::Protocol.packer_factory.packer }
+  let(:packer) { ScriptCore::Protocol.packer_factory.packer }
 
   it "processes an output message" do
     io = StringIO.new(packer.pack([
@@ -14,10 +14,10 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
 
     message_processor.process_all(io)
     expect(message_processor.to_result).to eq(
-      EnterpriseScriptService::Result.new(
+      ScriptCore::Result.new(
         output: {dog: "fine"},
         stdout: "hello",
-        stat: EnterpriseScriptService::Stat::Null,
+        stat: ScriptCore::Stat::Null,
         errors: [],
         measurements: {}
       )
@@ -34,14 +34,14 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
 
     message_processor.process_all(io)
     result = message_processor.to_result
-    error = EnterpriseScriptService::EngineRuntimeError.new(
+    error = ScriptCore::EngineRuntimeError.new(
       "oops", guest_backtrace: ["oops.rb:1:5"]
     )
     expect(result).to eq(
-      EnterpriseScriptService::Result.new(
+      ScriptCore::Result.new(
         output: nil,
         stdout: "",
-        stat: EnterpriseScriptService::Stat::Null,
+        stat: ScriptCore::Stat::Null,
         errors: [error],
         measurements: {}
       )
@@ -61,17 +61,17 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
 
     message_processor.process_all(io)
     result = message_processor.to_result
-    error = EnterpriseScriptService::EngineSyntaxError.new(
+    error = ScriptCore::EngineSyntaxError.new(
       "unexpected keyword end",
       filename: "syntax_error.rb",
       line_number: 3,
       column: 40
     )
     expect(result).to eq(
-      EnterpriseScriptService::Result.new(
+      ScriptCore::Result.new(
         output: nil,
         stdout: "",
-        stat: EnterpriseScriptService::Stat::Null,
+        stat: ScriptCore::Stat::Null,
         errors: [error],
         measurements: {}
       )
@@ -90,12 +90,12 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
 
     message_processor.process_all(io)
     result = message_processor.to_result
-    error = EnterpriseScriptService::EngineUnknownTypeError.new(type: 9)
+    error = ScriptCore::EngineUnknownTypeError.new(type: 9)
     expect(result).to eq(
-      EnterpriseScriptService::Result.new(
+      ScriptCore::Result.new(
         output: nil,
         stdout: "",
-        stat: EnterpriseScriptService::Stat::Null,
+        stat: ScriptCore::Stat::Null,
         errors: [error],
         measurements: {}
       )
@@ -111,12 +111,12 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
 
     message_processor.process_all(io)
     result = message_processor.to_result
-    error = EnterpriseScriptService::EngineUnknownExtError.new(type: 1)
+    error = ScriptCore::EngineUnknownExtError.new(type: 1)
     expect(result).to eq(
-      EnterpriseScriptService::Result.new(
+      ScriptCore::Result.new(
         output: nil,
         stdout: "",
-        stat: EnterpriseScriptService::Stat::Null,
+        stat: ScriptCore::Stat::Null,
         errors: [error],
         measurements: {}
       )
@@ -132,14 +132,14 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
 
     message_processor.process_all(io)
     result = message_processor.to_result
-    error = EnterpriseScriptService::EngineInternalError.new(
+    error = ScriptCore::EngineInternalError.new(
       %(unknown error: {:__type=>:lol, :message=>"yolo"})
     )
     expect(result).to eq(
-      EnterpriseScriptService::Result.new(
+      ScriptCore::Result.new(
         output: nil,
         stdout: "",
-        stat: EnterpriseScriptService::Stat::Null,
+        stat: ScriptCore::Stat::Null,
         errors: [error],
         measurements: {}
       )
@@ -155,10 +155,10 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
     message_processor.process_all(io)
     result = message_processor.to_result
     expect(result).to eq(
-      EnterpriseScriptService::Result.new(
+      ScriptCore::Result.new(
         output: nil,
         stdout: "",
-        stat: EnterpriseScriptService::Stat::Null,
+        stat: ScriptCore::Stat::Null,
         errors: [],
         measurements: {transmogrification: 14}
       )
@@ -179,10 +179,10 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
     message_processor.process_all(io)
     result = message_processor.to_result
     expect(result).to eq(
-      EnterpriseScriptService::Result.new(
+      ScriptCore::Result.new(
         output: nil,
         stdout: "",
-        stat: EnterpriseScriptService::Stat::Null,
+        stat: ScriptCore::Stat::Null,
         errors: [],
         measurements: {transmogrification: 26}
       )
@@ -199,10 +199,10 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
     message_processor.process_all(io)
     result = message_processor.to_result
     expect(result).to eq(
-      EnterpriseScriptService::Result.new(
+      ScriptCore::Result.new(
         output: nil,
         stdout: "",
-        stat: EnterpriseScriptService::Stat.new(
+        stat: ScriptCore::Stat.new(
           instructions: 12_345,
           memory: 2334
         ),
@@ -218,7 +218,7 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
       errors = message_processor.to_result.errors
 
       expect(errors).to eq([
-                             EnterpriseScriptService::UnknownTypeError.new
+                             ScriptCore::UnknownTypeError.new
                            ])
     end
 
@@ -227,7 +227,7 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
       errors = message_processor.to_result.errors
 
       expect(errors).to eq([
-                             EnterpriseScriptService::EngineMemoryQuotaError.new
+                             ScriptCore::EngineMemoryQuotaError.new
                            ])
     end
 
@@ -236,7 +236,7 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
       errors = message_processor.to_result.errors
 
       expect(errors).to eq([
-                             EnterpriseScriptService::EngineInstructionQuotaError.new
+                             ScriptCore::EngineInstructionQuotaError.new
                            ])
     end
 
@@ -245,7 +245,7 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
       errors = message_processor.to_result.errors
 
       expect(errors).to eq([
-                             EnterpriseScriptService::EngineAbnormalExitError.new(code: 123)
+                             ScriptCore::EngineAbnormalExitError.new(code: 123)
                            ])
     end
   end
@@ -256,9 +256,9 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
       errors = message_processor.to_result.errors
 
       expect(errors).to eq([
-                             EnterpriseScriptService::EngineIllegalSyscallError.new
+                             ScriptCore::EngineIllegalSyscallError.new
                            ])
-      expect(errors[0]).to be_kind_of(EnterpriseScriptService::EngineSignaledError)
+      expect(errors[0]).to be_kind_of(ScriptCore::EngineSignaledError)
       expect(errors[0].signal).to eq(31)
     end
 
@@ -267,7 +267,7 @@ RSpec.describe(EnterpriseScriptService::MessageProcessor) do
       errors = message_processor.to_result.errors
 
       expect(errors).to eq([
-                             EnterpriseScriptService::EngineSignaledError.new(signal: 40)
+                             ScriptCore::EngineSignaledError.new(signal: 40)
                            ])
     end
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module EnterpriseScriptService
+module ScriptCore
   class ExecutableNotFound < IOError
     attr_reader :executable_path
 
