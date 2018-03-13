@@ -4,7 +4,8 @@ module ScriptCore
   class Engine
     attr_accessor :timeout, :instruction_quota, :instruction_quota_start, :memory_quota, :instructions
 
-    def initialize(bin_path = ScriptCore::DEFAULT_BIN_PATH, executable_name: "enterprise_script_service",
+    def initialize(bin_path = ScriptCore::DEFAULT_BIN_PATH,
+                   executable_name: "enterprise_script_service",
                    instructions_name: "enterprise_script_service.mrb")
       raise Errno::ENOENT, "No such directory - #{bin_path}" unless File.directory?(bin_path)
       @bin_path = bin_path
@@ -19,14 +20,14 @@ module ScriptCore
       @instructions = File.exist?(preload_instructions_path) ? File.binread(preload_instructions_path) : nil
     end
 
-    def eval(sources, payload: nil)
+    def eval(sources, input: nil, instruction_quota_start: nil)
       @executable.run(
-        input: payload || {},
-        sources: sources || [],
+        input: input || {},
+        sources: sources,
         instructions: @instructions,
         timeout: @timeout,
         instruction_quota: @instruction_quota,
-        instruction_quota_start: @instruction_quota_start,
+        instruction_quota_start: instruction_quota_start || @instruction_quota_start,
         memory_quota: @memory_quota
       )
     end
