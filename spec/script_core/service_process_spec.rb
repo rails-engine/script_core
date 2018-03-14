@@ -2,6 +2,7 @@
 
 RSpec.describe(ScriptCore::ServiceProcess) do
   let(:pid) { rand(1 << 16) }
+  let(:environment_variables) { {"TZ" => "US/Pacific"} }
   let(:service_path) { "bin/my-subprocess" }
   let(:pipe_pairs) { [] }
 
@@ -13,13 +14,14 @@ RSpec.describe(ScriptCore::ServiceProcess) do
   end
 
   let(:service_process) do
-    ScriptCore::ServiceProcess.new(service_path, spawner, 100_000, 2, 4 << 20)
+    ScriptCore::ServiceProcess.new(service_path, spawner, 100_000, 2, 4 << 20, environment_variables)
   end
 
   it "creates a channel to communicate with the subprocess" do
     in_reader = nil
     out_writer = nil
-    expect(spawner).to receive(:spawn) do |path, **options|
+    expect(spawner).to receive(:spawn) do |env, path, **options|
+      expect(env).to eq(environment_variables)
       expect(path).to eq(service_path)
       in_reader = options[:in].dup
       expect(in_reader).to be_an(IO)
@@ -41,7 +43,7 @@ RSpec.describe(ScriptCore::ServiceProcess) do
 
   it "open passes arguments to process" do
     expect(spawner)
-      .to receive(:spawn).once.with(instance_of(String), "-i", 100_000.to_s, "-C", 2.to_s, "-m", (4 << 20).to_s, instance_of(Hash))
+      .to receive(:spawn).once.with(instance_of(Hash), instance_of(String), "-i", 100_000.to_s, "-C", 2.to_s, "-m", (4 << 20).to_s, instance_of(Hash))
     service_process.open do |c|
     end
   end

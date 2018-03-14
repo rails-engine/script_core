@@ -20,7 +20,7 @@ module ScriptCore
       @instructions = File.exist?(preload_instructions_path) ? File.binread(preload_instructions_path) : nil
     end
 
-    def eval(sources, input: nil, instruction_quota_start: nil)
+    def eval(sources, input: nil, instruction_quota_start: nil, environment_variables: {})
       @executable.run(
         input: input || {},
         sources: sources,
@@ -28,7 +28,8 @@ module ScriptCore
         timeout: @timeout,
         instruction_quota: @instruction_quota,
         instruction_quota_start: instruction_quota_start || @instruction_quota_start,
-        memory_quota: @memory_quota
+        memory_quota: @memory_quota,
+        environment_variables: environment_variables
       )
     end
   end

@@ -2,14 +2,15 @@
 
 module ScriptCore
   class ServiceProcess
-    attr_reader(:path, :spawner, :instruction_quota, :instruction_quota_start, :memory_quota)
+    attr_reader(:path, :spawner, :instruction_quota, :instruction_quota_start, :memory_quota, :environment_variables)
 
-    def initialize(path, spawner, instruction_quota, instruction_quota_start, memory_quota)
+    def initialize(path, spawner, instruction_quota, instruction_quota_start, memory_quota, environment_variables = {})
       @path = path
       @spawner = spawner
       @instruction_quota = instruction_quota
       @instruction_quota_start = instruction_quota_start
       @memory_quota = memory_quota
+      @environment_variables = environment_variables
     end
 
     def open
@@ -17,6 +18,7 @@ module ScriptCore
       out_reader, out_writer = IO.pipe
 
       pid = spawner.spawn(
+        environment_variables,
         path,
         "-i", instruction_quota.to_s,
         "-C", instruction_quota_start.to_s,
