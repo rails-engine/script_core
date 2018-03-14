@@ -2,6 +2,7 @@ MRuby::GemBox.new do |conf|
   conf.gem("mruby-mpdecimal")
 
   conf.gem(core: "mruby-math")
+  conf.gem(core: "mruby-time")
   conf.gem(core: "mruby-struct")
   conf.gem(core: "mruby-enum-ext")
   conf.gem(core: "mruby-string-ext")
