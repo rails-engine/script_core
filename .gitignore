@@ -2,6 +2,7 @@
 .vagrant
 .bundle
 *.gem
+*.mrb
 Gemfile.lock
 tmp
 bin/enterprise_script_service
@@ -9,5 +10,4 @@ bin/enterprise_script_service_tests
 bin/enterprise_script_service.dSYM
 bin/enterprise_script_service_tests.dSYM
 bin/mrbc
-bin/mruby
 spec/examples.txt

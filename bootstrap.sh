@@ -8,4 +8,3 @@ cd ruby-2.5.0
 ./configure --prefix=/usr/local
 make
 make install
-gem install bundler

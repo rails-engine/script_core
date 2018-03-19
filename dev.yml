@@ -1,4 +1,4 @@
-name: enterprise-script-service
+name: script_core
 
 up:
   - xcode_clt
@@ -10,11 +10,11 @@ up:
 commands:
   recompile:
     syntax: ""
-    desc: "Compiles native extention"
+    desc: "Compiles native extension"
     run: bin/rake clobber compile
   compile:
     syntax: ""
-    desc: "Compiles native extention"
+    desc: "Compiles native extension"
     run: bin/rake compile
   spec:
     syntax: ""
