@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require("msgpack")
-require("open3")
+require "msgpack"
+require "open3"
 
 RSpec.describe(ScriptCore) do
   it "evaluates a simple script" do
