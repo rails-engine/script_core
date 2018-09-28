@@ -1,11 +1,29 @@
 ScriptCore
 ====
 
-ScriptCore is forked by Shopify's enterprise script service.
+> ScriptCore is under development, the codebase is unoptimized and has many bad practices, I may do breaking changes even force pushing to master branch.
+
+ScriptCore is a fork of Shopify's enterprise script service.
 
 The enterprise script service (aka ESS) is a thin Ruby API layer that spawns a process, the `enterprise_script_engine`, to execute an untrusted Ruby script.
 
 The `enterprise_script_engine` executable ingests the input from `stdin` as a msgpack encoded payload; then spawns an mruby-engine; uses seccomp to sandbox itself; feeds `library`, `input` and finally the Ruby scripts into the engine; returns the output as a msgpack encoded payload to `stdout` and finally exits.
+
+## Why fork?
+
+I want to make these changes:
+
+- Toolchain
+    - Expose MRuby build config to allow developer can modify mruby-engine executable, e.g: add some gems
+    - Expose `mrbc` to allow developer precompile MRuby library that would inject to sandboxie
+    - Watch and auto compiling MRuby library like Assets Pipeline
+    - Rake tasks for compiling mruby-engine & MRuby library (should support multiple files compiling)
+- Usability
+    - Resolve MRuby timezone problem (by setting `TZ` env on start mruby-engine)
+    - Allow msgpack passing `BigDecimal`
+- Practice
+    - Rails generator for MRuby library
+    - Find a good place for MRuby library & mruby-engine build config
 
 ## Data format
 
