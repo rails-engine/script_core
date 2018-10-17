@@ -8,6 +8,7 @@ module ScriptCore
                    executable_name: "enterprise_script_service",
                    instructions_name: "enterprise_script_service.mrb")
       raise Errno::ENOENT, "No such directory - #{bin_path}" unless File.directory?(bin_path)
+
       @bin_path = bin_path
 
       @executable = ScriptCore::Executable.new(@bin_path.join(executable_name))

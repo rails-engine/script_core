@@ -10,6 +10,7 @@ module ScriptCore
       _pid, status = Process.wait2(pid, flags)
 
       return unless status
+
       if status.signaled?
         255 + status.termsig
       else

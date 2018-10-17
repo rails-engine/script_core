@@ -14,6 +14,7 @@ raise(<<-MESSAGE) unless Dir.exist?(MRUBY_DIR.join("src"))
     $ git submodule update
 
 MESSAGE
+
 ESS_ROOT = Pathname.new(__dir__).join("../..")
 ROOT =
   if ENV["INSTALL_DIR"] && File.directory?(ENV["INSTALL_DIR"])

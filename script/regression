@@ -9,19 +9,21 @@ def expected_result?(file)
   return true if $CHILD_STATUS.success?
   return true if $CHILD_STATUS.exitstatus == 1
   return true if OUT_OF_MEMORY_EXPECTED.include?(file) && $CHILD_STATUS.termsig == 9
+
   false
 end
 
 pwd = Pathname.new(__FILE__).dirname
 mruby = pwd.join("../ext/enterprise_script_service/mruby/bin/mruby").to_s
-testdir = pwd.join("../tests/regression")
+test_dir = pwd.join("../tests/regression")
 
 failures = false
 
-Dir.entries(testdir).sort.each do |file|
-  filepath = testdir.join(file)
-  next unless File.file?(filepath)
-  cmd = "#{mruby} #{filepath}"
+Dir.entries(test_dir).sort.each do |file|
+  file_path = test_dir.join(file)
+  next unless File.file?(file_path)
+
+  cmd = "#{mruby} #{file_path}"
   system(cmd)
 
   if expected_result?(file)
