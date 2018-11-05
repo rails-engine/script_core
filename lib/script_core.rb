@@ -17,6 +17,8 @@ require "script_core/stat"
 require "script_core/executable"
 require "script_core/engine"
 
+require "script_core/railtie" if defined?(Rails)
+
 module ScriptCore
   DEFAULT_BIN_PATH = Pathname.new(__dir__).parent.join("bin")
   DEFAULT_EXECUTABLE_PATH = DEFAULT_BIN_PATH.join("enterprise_script_service")

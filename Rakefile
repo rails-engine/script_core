@@ -15,6 +15,11 @@ begin
 rescue LoadError
 end
 
+APP_RAKEFILE = File.expand_path("spec/dummy/Rakefile", __dir__)
+load "rails/tasks/engine.rake"
+
+load "rails/tasks/statistics.rake"
+
 task(compile: []) do
   Dir.chdir("ext/enterprise_script_service") do
     sh("../../bin/rake")
