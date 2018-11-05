@@ -44,7 +44,7 @@ LIBSECCOMP_LIB_DIR = LIBSECCOMP_DIR.join("src/.libs")
 
 CXX = ENV["CXX"] || "g++"
 
-LIBSECCOMP_CFLAGS = if RUBY_PLATFORM =~ /linux/
+LIBSECCOMP_CFLAGS = if RUBY_PLATFORM.match?(/linux/)
   [
     "-Ilibseccomp/include",
     "-L#{LIBSECCOMP_LIB_DIR}",
