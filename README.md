@@ -25,6 +25,128 @@ I want to make these changes:
     - Rails generator for MRuby library
     - Find a good place for MRuby library & mruby-engine build config
 
+## Demo
+
+Clone the repository.
+
+```sh
+$ git clone https://github.com/rails-engine/script_core
+```
+
+Change directory
+
+```sh
+$ cd script_core
+```
+
+Run bundler
+
+```sh
+$ bundle install
+```
+
+Preparing database
+
+```sh
+$ bin/rails db:migrate
+```
+
+Start the Rails server
+
+```sh
+$ bin/rails s
+```
+
+Open your browser, and visit `http://localhost:3000`
+
+## Installation
+
+Add this line to your Gemfile:
+
+```ruby
+gem 'script_core'
+```
+
+Or you may want to include the gem directly from GitHub:
+
+```ruby
+gem 'script_core', github: 'rails-engine/script_core'
+```
+
+Then execute:
+
+```sh
+$ bundle
+```
+
+## Build your executable
+
+ScriptCore already has a default executable, because of mruby's gem is compiled in binary, or you may want to build a mruby library, build your own engine is necessary.
+
+You can check `spec/dummy/mruby` as reference.
+
+### Create a new engine
+
+Run the task in your app directory:
+
+```sh
+$ rails app:script_core:engine:build
+```
+
+It will generate `mruby` directory in your app root folder.
+
+### Build lib for the engine
+
+Put `.rb` files into `mruby/lib` directory.
+
+### Compile lib for the engine
+
+Run the task in your app directory:
+
+```sh
+$ rails app:script_core:engine:compile_lib
+```
+
+### Use it in your app
+
+You can wrap it for example:
+
+```ruby
+module ScriptEngine
+  class << self
+    def engine
+      @engine ||= ScriptCore::Engine.new Rails.root.join("mruby/bin")
+    end
+
+    def eval(string, input: nil, instruction_quota_start: nil, environment_variables: {})
+      sources = [
+        ["user", string],
+      ]
+
+      engine.eval sources, input: input,
+                  instruction_quota_start: instruction_quota_start,
+                  environment_variables: environment_variables
+    end
+  end
+end
+```
+
+Then use it:
+
+```ruby
+ScriptEngine.eval "@output = 'hello world'"
+```
+
+## Tips
+
+- Add `/mruby/bin` into `.gitignore`
+- Don't do any IO in mruby side
+- Because of `seccomp`, it may have compatible issues with some mruby gems
+- mruby doesn't have `Date`, use `Time` instead
+- mruby is poor support timezone, you'd better handle it by yourself
+
+# More information about ESS
+
 ## Data format
 
 ### Input
@@ -120,11 +242,11 @@ Ruby code is in `lib/`
 ```
 $ vagrant up
 $ vagrant ssh
-vagrant@vagrant-ubuntu-trusty-64:~$ cd /vagrant
-vagrant@vagrant-ubuntu-trusty-64:/vagrant$ bundle install
-vagrant@vagrant-ubuntu-trusty-64:/vagrant$ git submodule init
-vagrant@vagrant-ubuntu-trusty-64:/vagrant$ git submodule update
-vagrant@vagrant-ubuntu-trusty-64:/vagrant$ bin/rake
+vagrant@vagrant-ubuntu-bionic-64:~$ cd /vagrant
+vagrant@vagrant-ubuntu-bionic-64:/vagrant$ bundle install
+vagrant@vagrant-ubuntu-bionic-64:/vagrant$ git submodule init
+vagrant@vagrant-ubuntu-bionic-64:/vagrant$ git submodule update
+vagrant@vagrant-ubuntu-bionic-64:/vagrant$ bin/rake
 ```
 
 ## Contributing
