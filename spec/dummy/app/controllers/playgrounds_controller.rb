@@ -8,7 +8,7 @@ class PlaygroundsController < ApplicationController
   end
 
   def create
-    @result = ScriptCore.run sources: [["source", @source]]
+    @result = ScriptEngine.eval @source
   end
 
   private

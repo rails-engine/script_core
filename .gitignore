@@ -22,3 +22,6 @@ spec/dummy/tmp/
 # Ignore uploaded files in development
 /spec/dummy/storage/*
 !/spec/dummy/storage/.keep
+
+# Ignore compiled mruby in dummy app
+/spec/dummy/mruby/bin

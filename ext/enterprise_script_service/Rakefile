@@ -17,7 +17,9 @@ MESSAGE
 
 ESS_ROOT = Pathname.new(__dir__).join("../..")
 ROOT =
-  if ENV["INSTALL_DIR"] && File.directory?(ENV["INSTALL_DIR"])
+  if ENV["TARGET_DIR"] && File.directory?(ENV["TARGET_DIR"])
+    Pathname.new(ENV["TARGET_DIR"])
+  elsif ENV["INSTALL_DIR"] && File.directory?(ENV["INSTALL_DIR"])
     Pathname.new(ENV["INSTALL_DIR"])
   else
     ESS_ROOT
