@@ -4,7 +4,7 @@
       <%= link_to "Script Core", root_path, class: "navbar-item" %>
     </div>
     <div class="navbar-end">
-      <%= link_to "Home", root_path, class: "navbar-item #{"is-active" if current_page?(root_path)}" %>
+      <%= link_to "Playground", playground_path, class: "navbar-item #{"is-active" if controller_name == "playgrounds"}" %>
     </div>
   </div>
 </nav>
