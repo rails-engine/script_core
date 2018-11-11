@@ -51,6 +51,13 @@ Preparing database
 $ bin/rails db:migrate
 ```
 
+Build mruby engine & engine lib
+
+```sh
+$ bin/rails app:script_core:engine:build
+$ bin/rails app:script_core:engine:compile_lib 
+```
+
 Start the Rails server
 
 ```sh
