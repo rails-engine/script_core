@@ -4,7 +4,9 @@ def prepare_input
 end
 
 def prepare_output
-  @output = Output.dump
+  instance_variable_set :@output, Output.dump
 end
 
-module ScriptKernel; end
+def set_output(value)
+  Output.value = value
+end

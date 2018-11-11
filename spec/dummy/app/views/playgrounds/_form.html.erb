@@ -1,7 +1,7 @@
 <%= form_with url: playground_path, method: :post, local: true do |f| %>
   <div class="field">
     <div class="control">
-      <%= text_area_tag :source, source, class: "textarea", rows: 10 %>
+      <%= text_area_tag :source, source, class: "textarea", rows: 10, placeholder: "# Ruby code here" %>
     </div>
   </div>
 

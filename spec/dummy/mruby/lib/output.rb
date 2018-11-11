@@ -10,7 +10,7 @@ module Output
         raise "Output can't pass to host Ruby."
       end
 
-      @value
+      value
     end
 
     private
@@ -32,8 +32,4 @@ module Output
       false
     end
   end
-end
-
-def set_output(value)
-  Output.value = value
 end

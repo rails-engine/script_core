@@ -3,7 +3,19 @@
 class PlaygroundsController < ApplicationController
   before_action :set_source
 
-  def show; end
+  def show
+    @source = <<~CODE
+      puts "You can use `puts` to output strings to (fake) stdout for logging..."
+      puts "Call multiple absolutely OK!"
+
+      str = ""
+      (1..3).each do |i|
+        str += "Hello world!!! x\#{i}; "
+      end
+
+      set_output str
+    CODE
+  end
 
   def create
     @result = ScriptEngine.eval @source
