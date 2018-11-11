@@ -8,5 +8,13 @@ module Input
     def [](key)
       @input[key]
     end
+
+    def to_s
+      @input.to_s
+    end
+
+    def value
+      @input
+    end
   end
 end

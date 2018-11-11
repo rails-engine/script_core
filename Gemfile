@@ -22,11 +22,17 @@ gem "pry-byebug"
 
 # To support ES6
 gem "sprockets", "~> 4.0.0.beta4"
+# Support ES6
+gem "babel-transpiler"
 # Use SCSS for stylesheets
 gem "sassc-rails"
 # Use Uglifier as compressor for JavaScript assets
 gem "uglifier", ">= 1.3.0"
 
+gem "cocoon"
+gem "form_core"
+
 gem "turbolinks", "~> 5"
 gem "jquery-rails"
-gem "bulma-rails", "~> 0.5"
+gem "bulma-rails"
+gem "selectize-rails"

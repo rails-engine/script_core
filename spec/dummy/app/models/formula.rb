@@ -1,0 +1,6 @@
+class Formula < ApplicationRecord
+  belongs_to :form
+
+  validates :name,
+            presence: true
+end

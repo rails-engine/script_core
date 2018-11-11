@@ -5,6 +5,7 @@
     </div>
     <div class="navbar-end">
       <%= link_to "Playground", playground_path, class: "navbar-item #{"is-active" if controller_name == "playgrounds"}" %>
+      <%= link_to "Forms", forms_path, class: "navbar-item #{"is-active" if controller.class.to_s.split("::").first =~ /\A(FormsController|Forms)\z/}" %>
     </div>
   </div>
 </nav>

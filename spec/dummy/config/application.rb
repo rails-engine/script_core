@@ -18,6 +18,10 @@ require "rails/test_unit/railtie"
 Bundler.require(*Rails.groups)
 require "script_core"
 
+Dir[Pathname.new(File.dirname(__FILE__)).realpath.parent.join("lib", "monkey_patches", "*.rb")].map do |file|
+  require file
+end
+
 module Dummy
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.

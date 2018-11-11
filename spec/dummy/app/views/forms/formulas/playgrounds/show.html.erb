@@ -1,0 +1,14 @@
+<div class="section">
+  <div class="container">
+    <h2 class="title"><%= @formula.name %></h2>
+
+    <%= render "_form_core/render/form",
+               form: @form, instance: @form_record,
+               options: {
+                 scope: :form_record, local: true,
+                 url: form_formula_playground_path(@form, @formula),
+                 back_url: form_formulas_path(@form)
+               }
+    %>
+  </div>
+</div>

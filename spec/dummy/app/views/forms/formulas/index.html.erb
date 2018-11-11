@@ -1,0 +1,28 @@
+<div class="section">
+  <div class="container">
+    <p content="content">
+      <%= link_to "New formula", new_form_formula_path(@form), class: "button is-primary" %>
+    </p>
+    <table class="table is-fullwidth">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @formulas.each do |formula| %>
+          <tr>
+            <td><%= formula.name %></td>
+            <td>
+              <%= link_to "Playground", form_formula_playground_path(@form, formula) %> |
+              <%= link_to "Edit", edit_form_formula_path(@form, formula) %> |
+              <%= link_to "Destroy", form_formula_path(@form, formula), method: :delete, data: {confirm: "Are you sure?"} %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+

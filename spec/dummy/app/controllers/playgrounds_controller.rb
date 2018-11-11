@@ -3,9 +3,7 @@
 class PlaygroundsController < ApplicationController
   before_action :set_source
 
-  def show
-
-  end
+  def show; end
 
   def create
     @result = ScriptEngine.eval @source

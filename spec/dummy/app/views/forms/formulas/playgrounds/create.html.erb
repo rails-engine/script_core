@@ -1,0 +1,48 @@
+<section class="section">
+  <div class="container">
+    <h2 class="title"><%= @formula.name %></h2>
+
+    <div class="content">
+      <h3>Input</h3>
+
+      <pre><%= @input %></pre>
+    </div>
+
+    <% if @result.errors.any? %>
+      <div class="content">
+        <h3>Error</h3>
+
+        <ul>
+          <% @result.errors.each do |error| %>
+            <li><%= error.message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% else %>
+      <div class="content">
+        <h3>Output</h3>
+
+        <pre><%= @result.output %></pre>
+      </div>
+
+      <div class="content">
+        <h3>Stdout</h3>
+
+        <pre><%= @result.stdout %></pre>
+      </div>
+
+      <div class="content">
+        <h3>Stat</h3>
+
+        <dl>
+          <dt>Instructions</dt>
+          <dd><%= @result.stat.instructions %></dd>
+          <dt>Memory</dt>
+          <dd><%= @result.stat.memory %> B</dd>
+          <dt>Time</dt>
+          <dd><%= @result.measurements.values.reduce(&:+) %> µs</dd>
+        </dl>
+      </div>
+    <% end %>
+  </div>
+</section>
