@@ -9,14 +9,14 @@ module ScriptEngine
     def eval(string, input: nil, instruction_quota_start: nil, environment_variables: {})
       environment_variables.reverse_merge!("TZ" => Time.zone.name)
       sources = [
-        ["prepare_input", "prepare_input"],
+        %w[prepare_input prepare_input],
         ["user", string],
-        ["prepare_output", "prepare_output"]
+        %w[prepare_output prepare_output]
       ]
 
       engine.eval sources, input: input,
-                  instruction_quota_start: instruction_quota_start,
-                  environment_variables: environment_variables
+                           instruction_quota_start: instruction_quota_start,
+                           environment_variables: environment_variables
     end
   end
 end

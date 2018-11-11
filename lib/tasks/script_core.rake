@@ -11,7 +11,7 @@ namespace :script_core do
       ARGV.each { |a| task(a.to_sym) {} }
 
       name = ARGV[1] || DEFAULT_ENGINE_NAME
-      unless name =~ /\A[a-z_]+\Z/
+      unless /\A[a-z_]+\Z/.match?(name)
         puts "Engine name can only be `a` to `z` and `_`."
         exit 1
       end
@@ -30,13 +30,13 @@ namespace :script_core do
       ARGV.each { |a| task(a.to_sym) {} }
 
       name = ARGV[1] || DEFAULT_ENGINE_NAME
-      unless name =~ /\A[a-z_]+\Z/
+      unless /\A[a-z_]+\Z/.match?(name)
         puts "Must provide a valid engine name."
         exit 1
       end
 
       engine_root = Rails.root.join(name)
-      unless Dir.exists?(engine_root)
+      unless Dir.exist?(engine_root)
         puts "Engine home `#{engine_root}` doesn't exists."
         puts "You should run `rake script_core:engine:new #{name}` to create it first."
         exit 1
@@ -51,7 +51,7 @@ namespace :script_core do
       end
 
       Dir.chdir(SCRIPT_CORE_ROOT.join("ext/enterprise_script_service")) do
-        sh("#{env_vars} #{Rails.root.join("bin/rake")}")
+        sh("#{env_vars} #{Rails.root.join('bin/rake')}")
       end
     end
 
@@ -60,32 +60,32 @@ namespace :script_core do
       ARGV.each { |a| task(a.to_sym) {} }
 
       name = ARGV[1] || DEFAULT_ENGINE_NAME
-      unless name =~ /\A[a-z_]+\Z/
+      unless /\A[a-z_]+\Z/.match?(name)
         puts "Must provide a valid engine name."
         exit 1
       end
 
       engine_root = Rails.root.join(name)
-      unless Dir.exists?(engine_root)
+      unless Dir.exist?(engine_root)
         puts "Engine home `#{engine_root}` doesn't exists."
         puts "You should run `rake script_core:engine:new #{name}` to create it first."
         exit 1
       end
 
-      unless File.exists?(engine_root.join("bin/mrbc"))
+      unless File.exist?(engine_root.join("bin/mrbc"))
         puts "Engine haven't built yet."
         puts "You should run `rake script_core:engine:build #{name}` first."
         exit 1
       end
 
-      lib_files = Dir["#{engine_root.join("lib")}/**/*.rb"]
+      lib_files = Dir["#{engine_root.join('lib')}/**/*.rb"]
       if lib_files.empty?
         puts "Empty lib, no need to compile"
         exit 0
       end
 
       Dir.chdir(engine_root.join("bin")) do
-        sh("./mrbc -o enterprise_script_service.mrb #{lib_files.join(" ")}")
+        sh("./mrbc -o enterprise_script_service.mrb #{lib_files.join(' ')}")
       end
     end
 
@@ -94,13 +94,13 @@ namespace :script_core do
       ARGV.each { |a| task(a.to_sym) {} }
 
       name = ARGV[1] || DEFAULT_ENGINE_NAME
-      unless name =~ /\A[a-z_]+\Z/
+      unless /\A[a-z_]+\Z/.match?(name)
         puts "Must provide a valid engine name."
         exit 1
       end
 
       engine_root = Rails.root.join(name)
-      unless Dir.exists?(engine_root)
+      unless Dir.exist?(engine_root)
         puts "Engine home `#{engine_root}` doesn't exists."
         exit 1
       end

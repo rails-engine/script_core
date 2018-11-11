@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Formula < ApplicationRecord
   belongs_to :form
 

@@ -49,9 +49,7 @@ class FieldOptions < DuckRecord::Base
         end.stringify_keys
 
       data = {root_key_for_serialization => serializable_hash}
-      if keeping_old_serialization
-        data.reverse_merge! obj.raw_attributes
-      end
+      data.reverse_merge! obj.raw_attributes if keeping_old_serialization
 
       YAML.dump(data)
     end
@@ -71,14 +69,10 @@ class FieldOptions < DuckRecord::Base
     def load_from_yaml(yaml)
       return new if yaml.blank?
 
-      unless yaml.is_a?(String) && /^---/.match?(yaml)
-        return new
-      end
+      return new unless yaml.is_a?(String) && /^---/.match?(yaml)
 
       decoded = YAML.safe_load(yaml, WHITELIST_CLASSES)
-      unless decoded.is_a? Hash
-        return new
-      end
+      return new unless decoded.is_a? Hash
 
       record = new decoded[root_key_for_serialization]
       record.raw_attributes = decoded.freeze

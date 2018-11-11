@@ -16,7 +16,7 @@ class Field < ApplicationRecord
             allow_blank: false
 
   default_value_for :name,
-                    -> (_) { "field_#{SecureRandom.hex(3)}" },
+                    ->(_) { "field_#{SecureRandom.hex(3)}" },
                     allow_nil: false
 
   def self.type_key

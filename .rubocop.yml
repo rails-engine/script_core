@@ -8,6 +8,7 @@ AllCops:
     - ext/enterprise_script_service/msgpack/**/*
     - ext/enterprise_script_service/libseccomp/**/*
     - spec/dummy/mruby/**/*
+    - spec/dummy/db/schema.rb
 
 Metrics/LineLength:
   Max: 150
@@ -154,4 +155,10 @@ Metrics/ClassLength:
   Enabled: false
 
 Layout/EmptyLinesAroundArguments:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Naming/UncommunicativeMethodParamName:
   Enabled: false
