@@ -1,9 +1,7 @@
 ScriptCore
 ====
 
-> ScriptCore is under development, the codebase is unoptimized and has many bad practices, I may do breaking changes even force pushing to master branch.
-
-ScriptCore is a fork of Shopify's enterprise script service.
+ScriptCore is a fork of [Shopify's enterprise script service](https://github.com/Shopify/ess).
 
 The enterprise script service (aka ESS) is a thin Ruby API layer that spawns a process, the `enterprise_script_engine`, to execute an untrusted Ruby script.
 
@@ -14,16 +12,17 @@ The `enterprise_script_engine` executable ingests the input from `stdin` as a ms
 I want to make these changes:
 
 - Toolchain
-    - Expose MRuby build config to allow developer can modify mruby-engine executable, e.g: add some gems
-    - Expose `mrbc` to allow developer precompile MRuby library that would inject to sandboxie
-    - Watch and auto compiling MRuby library like Assets Pipeline
-    - Rake tasks for compiling mruby-engine & MRuby library (should support multiple files compiling)
-- Usability
-    - Resolve MRuby timezone problem (by setting `TZ` env on start mruby-engine)
-    - Allow msgpack passing `BigDecimal`
+    - [x] Expose mruby build config to allow developer modify mruby-engine executable, e.g: add some gems
+    - [x] Expose `mrbc` to allow developer precompile mruby library that would inject to sandboxie
+    - [ ] Watching and auto compiling mruby library when it change
+    - [x] Rake tasks for compiling mruby-engine & mruby library
+    - [ ] Capistrano recipe
 - Practice
-    - Rails generator for MRuby library
-    - Find a good place for MRuby library & mruby-engine build config
+    - [x] Rails generator for mruby library
+    - [x] Find a good place for engines
+    - [ ] Find a good way to working with timezone on mruby side
+    - [ ] Find a good way to working with `BigDecimal` & `Date` (mruby doesn't have these) on mruby side
+    - [ ] Consider about IO operations
 
 ## Demo
 
@@ -37,6 +36,12 @@ Change directory
 
 ```sh
 $ cd script_core
+```
+
+Fetch submodules
+
+```sh
+$ git submodule update --init --recursive
 ```
 
 Run bundler
@@ -97,24 +102,44 @@ You can check `spec/dummy/mruby` as reference.
 Run the task in your app directory:
 
 ```sh
-$ rails app:script_core:engine:build
+$ rails script_core:engine:new [engine_name]
 ```
 
-It will generate `mruby` directory in your app root folder.
+`engine_name` is optional, by default it would be `mruby` that will generate `mruby` directory in your app root folder.
+
+Then execute:
+
+```sh
+$ rails script_core:engine:build [engine_name]
+```
+
+It will build mruby executables.
+
+#### customizing `gembox`
+
+Remove `.example` extension for `engine.gembox.example`, customize it, then rebuild the engine.
+
+**Warning: because of `seccomp`, you may meet compatibility problems, especially for IO relates gems.**
 
 ### Build lib for the engine
 
-Put `.rb` files into `mruby/lib` directory.
+Write your own lib for mruby environment in `mruby/lib` directory.
 
 ### Compile lib for the engine
 
 Run the task in your app directory:
 
 ```sh
-$ rails app:script_core:engine:compile_lib
+$ rails script_core:engine:compile_lib [engine_name]
 ```
 
-### Use it in your app
+### Ignoring engine binaries
+
+Because of engine binaries are platform dependent, it's good to compile in every deployment.
+
+Simply add `mruby/bin` to `.gitignore`.
+
+### Integrate to your app
 
 You can wrap it for example:
 
@@ -150,7 +175,9 @@ ScriptEngine.eval "@output = 'hello world'"
 - Don't do any IO in mruby side
 - Because of `seccomp`, it may have compatible issues with some mruby gems
 - mruby doesn't have `Date`, use `Time` instead
+- mruby doesn't have `BigDecimal`, you can use Shopify's `Decimal` instead
 - mruby is poor support timezone, you'd better handle it by yourself
+- mruby engine is fast, usually it only costs 3 - 5ms depends on complexity, but it consume a lot of memory (~300k at least per process)
 
 # More information about ESS
 

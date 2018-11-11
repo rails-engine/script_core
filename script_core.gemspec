@@ -10,7 +10,7 @@ require "script_core/version"
 Gem::Specification.new do |spec|
   spec.name = "script_core"
   spec.version = ScriptCore::VERSION
-  spec.summary = "A script engine powered by a mruby sandboxie, It's forked by Shopify's ESS."
+  spec.summary = "A script engine powered by mruby sandboxie, It's a fork of Shopify's ESS."
   spec.authors = ["jasl"]
   spec.email = "jasl9187@hotmail.com"
   spec.files = begin
