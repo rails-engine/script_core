@@ -51,7 +51,7 @@ namespace :script_core do
       end
 
       Dir.chdir(SCRIPT_CORE_ROOT.join("ext/enterprise_script_service")) do
-        sh("#{env_vars} #{Rails.root.join('bin/rake')}")
+        sh("#{env_vars} #{Rails.root.join('bin/bundle')} exec rake")
       end
     end
 
