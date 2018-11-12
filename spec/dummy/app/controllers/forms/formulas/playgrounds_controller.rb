@@ -13,7 +13,7 @@ module Forms
       return render :show unless @form_record.valid?
 
       @input = @form_record.serializable_hash
-      @result = ScriptEngine.eval @formula.body, input: @input
+      @result = ScriptEngine.eval2 @formula.body, input: @input
     end
 
     private
