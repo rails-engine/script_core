@@ -22,8 +22,12 @@
             <td><%= field.class.model_name.human %></td>
             <td><%= Field.human_enum_value(:accessibility, field.accessibility) %></td>
             <td>
-              <%= link_to "Validations", edit_field_validations_path(field) %> |
-              <%= link_to "Options", edit_field_options_path(field) %> |
+              <% if field.validations_configurable? %>
+                <%= link_to "Validations", edit_field_validations_path(field) %> |
+              <% end %>
+              <% if field.options_configurable? %>
+                <%= link_to "Options", edit_field_options_path(field) %> |
+              <% end %>
               <% if nested_form_attached_field?(field) %>
                 <%= link_to "Fields", nested_form_fields_path(field.nested_form) %> |
               <% end %>
