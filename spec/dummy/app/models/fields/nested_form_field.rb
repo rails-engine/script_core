@@ -11,8 +11,8 @@ module Fields
     serialize :validations, Validations::NestedFormField
     serialize :options, Options::NestedFormField
 
-    def entry_item_type
-      :nested_form
+    def attached_nested_form?
+      true
     end
 
     def interpret_to(model, overrides: {})
@@ -27,6 +27,9 @@ module Fields
 
       model.embeds_one name, anonymous_class: nested_model, validate: true
       model.accepts_nested_attributes_for name, reject_if: :all_blank
+      if accessibility == :readonly
+        model.attr_readonly name
+      end
 
       interpret_validations_to model, accessibility, overrides
       interpret_extra_to model, accessibility, overrides

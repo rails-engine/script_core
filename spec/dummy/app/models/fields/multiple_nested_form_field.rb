@@ -11,6 +11,10 @@ module Fields
     serialize :validations, Validations::MultipleNestedFormField
     serialize :options, Options::MultipleNestedFormField
 
+    def attached_nested_form?
+      true
+    end
+
     def interpret_to(model, overrides: {})
       check_model_validity!(model)
 
@@ -25,6 +29,9 @@ module Fields
 
       model.embeds_many name, anonymous_class: nested_model, validate: true
       model.accepts_nested_attributes_for name, reject_if: :all_blank
+      if accessibility == :readonly
+        model.attr_readonly name
+      end
 
       interpret_validations_to model, accessibility, overrides
       interpret_extra_to model, accessibility, overrides

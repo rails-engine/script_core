@@ -28,7 +28,7 @@
               <% if field.options_configurable? %>
                 <%= link_to "Options", edit_field_options_path(field) %> |
               <% end %>
-              <% if nested_form_attached_field?(field) %>
+              <% if field.attached_nested_form? %>
                 <%= link_to "Fields", nested_form_fields_path(field.nested_form) %> |
               <% end %>
               <%= link_to "Edit", edit_nested_form_field_path(@nested_form, field) %> |

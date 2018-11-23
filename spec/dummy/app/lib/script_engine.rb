@@ -30,8 +30,8 @@ module ScriptEngine
       ]
 
       engine.eval sources, input: input,
-                  instruction_quota_start: instruction_quota_start,
-                  environment_variables: environment_variables
+                           instruction_quota_start: instruction_quota_start,
+                           environment_variables: environment_variables
     end
   end
 end

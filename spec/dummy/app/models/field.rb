@@ -35,6 +35,10 @@ class Field < ApplicationRecord
     validations.is_a?(FieldOptions) && validations.attributes.any?
   end
 
+  def attached_nested_form?
+    false
+  end
+
   protected
 
   def interpret_validations_to(model, accessibility, overrides = {})
