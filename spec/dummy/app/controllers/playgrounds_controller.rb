@@ -33,7 +33,7 @@ class PlaygroundsController < ApplicationController
   end
 
   def create
-    @result = ScriptEngine.eval2 @source
+    @result = ScriptEngine.run_inline @source
   end
 
   private

@@ -28,6 +28,9 @@
               <% if field.options_configurable? %>
                 <%= link_to "Options", edit_field_options_path(field) %> |
               <% end %>
+              <% if field.attached_choices? %>
+                <%= link_to "Choices", field_choices_path(field) %> |
+              <% end %>
               <% if field.attached_nested_form? %>
                 <%= link_to "Fields", nested_form_fields_path(field.nested_form) %> |
               <% end %>

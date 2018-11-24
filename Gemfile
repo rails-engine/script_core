@@ -32,6 +32,10 @@ gem "uglifier", ">= 1.3.0"
 gem "cocoon"
 gem "form_core"
 
+gem "acts_as_list"
+gem "timeliness-i18n"
+gem "validates_timeliness", "~> 5.0.0.alpha1"
+
 gem "bulma-rails"
 gem "jquery-rails"
 gem "selectize-rails"

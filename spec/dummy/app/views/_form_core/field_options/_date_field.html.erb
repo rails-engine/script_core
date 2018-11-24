@@ -1,0 +1,97 @@
+<h3 class="title">Date field</h3>
+
+<div class="field">
+  <%= f.label :start_from, class: "label" %>
+  <div class="control">
+    <div class="field has-addons">
+      <p class="control">
+        <label class="radio button">
+          <%= f.radio_button :start_from, "unlimited" %>
+          Unlimited
+        </label>
+      </p>
+    </div>
+    <div class="field has-addons">
+      <p class="control">
+        <label class="radio button">
+          <%= f.radio_button :start_from, "today" %>
+          Today with offset
+        </label>
+      </p>
+      <p class="control">
+        <%= f.number_field :start_from_today_days_offset, class: "input", step: 1 %>
+      </p>
+    </div>
+    <div class="field has-addons">
+      <p class="control">
+        <label class="radio button">
+          <%= f.radio_button :start_from, "date" %>
+          Date
+        </label>
+      </p>
+      <p class="control">
+        <%= f.date_field :start, class: "input" %>
+      </p>
+    </div>
+    <div class="field has-addons">
+      <p class="control">
+        <label class="radio button">
+          <%= f.radio_button :start_from, "days_before_finish" %>
+          Days before finish
+        </label>
+      </p>
+      <p class="control">
+        <%= f.number_field :days_before_finish, class: "input", min: 1, step: 1 %>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="field">
+  <%= f.label :finish_to, class: "label" %>
+  <div class="control">
+    <div class="field has-addons">
+      <p class="control">
+        <label class="radio button">
+          <%= f.radio_button :finish_to, "unlimited" %>
+          Unlimited
+        </label>
+      </p>
+    </div>
+    <div class="field has-addons">
+      <p class="control">
+        <label class="radio button">
+          <%= f.radio_button :finish_to, "today" %>
+          Today with offset
+        </label>
+      </p>
+      <p class="control">
+        <%= f.number_field :finish_to_today_days_offset, class: "input", step: 1 %>
+      </p>
+    </div>
+    <div class="field has-addons">
+      <p class="control">
+        <label class="radio button">
+          <%= f.radio_button :finish_to, "date" %>
+          Date
+        </label>
+      </p>
+      <p class="control">
+        <%= f.date_field :finish, class: "input" %>
+      </p>
+    </div>
+    <div class="field has-addons">
+      <p class="control">
+        <label class="radio button">
+          <%= f.radio_button :finish_to, "days_since_start" %>
+          Days since start
+        </label>
+      </p>
+      <p class="control">
+        <%= f.number_field :days_since_start, class: "input", min: 1, step: 1 %>
+      </p>
+    </div>
+  </div>
+</div>
+
+<hr>

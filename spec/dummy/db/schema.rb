@@ -12,6 +12,15 @@
 
 ActiveRecord::Schema.define(version: 2018_11_11_111412) do
 
+  create_table "choices", force: :cascade do |t|
+    t.text "label", null: false
+    t.integer "field_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "position"
+    t.index ["field_id"], name: "index_choices_on_field_id"
+  end
+
   create_table "fields", force: :cascade do |t|
     t.string "name", null: false
     t.integer "accessibility", null: false

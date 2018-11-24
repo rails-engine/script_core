@@ -12,8 +12,8 @@ module Forms
       @form_record = @virtual_model.new form_record_params
       return render :show unless @form_record.valid?
 
-      @input = @form_record.serializable_hash
-      @result = ScriptEngine.eval2 @formula.body, input: @input
+      @payload = @form_record.serializable_hash
+      @result = ScriptEngine.run_inline @formula.body, payload: @payload
     end
 
     private

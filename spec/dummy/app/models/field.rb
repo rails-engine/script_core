@@ -7,6 +7,8 @@ class Field < ApplicationRecord
 
   belongs_to :form, class_name: "MetalForm", foreign_key: "form_id", touch: true
 
+  has_many :choices, -> { order(position: :asc) }, dependent: :destroy, autosave: true
+
   validates :label,
             presence: true
   validates :type,
@@ -33,6 +35,10 @@ class Field < ApplicationRecord
 
   def validations_configurable?
     validations.is_a?(FieldOptions) && validations.attributes.any?
+  end
+
+  def attached_choices?
+    false
   end
 
   def attached_nested_form?

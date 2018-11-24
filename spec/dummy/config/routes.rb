@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     scope module: :fields do
       resource :validations, only: %i[edit update]
       resource :options, only: %i[edit update]
+      resources :choices, except: %i[show]
     end
   end
 
@@ -28,4 +29,6 @@ Rails.application.routes.draw do
       resources :fields, except: %i[show]
     end
   end
+
+  resource :time_zone, only: [:update]
 end
