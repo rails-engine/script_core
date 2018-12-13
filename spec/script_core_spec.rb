@@ -232,7 +232,7 @@ RSpec.describe(ScriptCore) do
     expect(error).to be_an(ScriptCore::UnknownTypeError)
   end
 
-  it "does work with a simple payload" do
+  skip "does work with a simple payload" do
     service_path ||= begin
       base_path = Pathname.new(__dir__).parent
       base_path.join("bin/enterprise_script_service").to_s
