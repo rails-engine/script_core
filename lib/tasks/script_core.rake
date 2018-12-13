@@ -105,7 +105,10 @@ namespace :script_core do
         exit 1
       end
 
-      FileUtils.remove_dir engine_root.join("bin")
+      bin_path = engine_root.join("bin")
+      if Dir.exist?(bin_path)
+        FileUtils.remove_dir engine_root.join("bin")
+      end
     end
   end
 end
