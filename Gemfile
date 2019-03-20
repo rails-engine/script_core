@@ -7,7 +7,7 @@ gemspec
 
 # Dummy app
 gem "rails", "~> 5.2"
-gem "sqlite3"
+gem "sqlite3", "~> 1.3.6"
 
 # Use Puma as the app server
 gem "puma"
