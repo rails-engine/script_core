@@ -62,7 +62,7 @@ struct RProc *me_mruby_engine::generate_code(const ruby_source &ruby_src) {
   if (parser_state->nerr > 0) {
     mrb_parser_free(parser_state);
     throw bad_syntax(
-      parser_state->filename,
+      std::string(mrb_sym2name_len(parser_state->mrb, parser_state->filename_sym, NULL)),
       parser_state->error_buffer[0].lineno,
       parser_state->error_buffer[0].column,
       parser_state->error_buffer[0].message);
