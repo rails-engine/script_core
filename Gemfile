@@ -40,3 +40,6 @@ gem "bulma-rails"
 gem "jquery-rails"
 gem "selectize-rails"
 gem "turbolinks", "~> 5"
+
+gem "rubocop"
+gem "rubocop-performance"
