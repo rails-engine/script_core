@@ -9,4 +9,6 @@ module Fields
   ].each do |type|
     require_dependency "fields/#{type}_field"
   end
+
+  MAP = Hash[*Field.descendants.map { |f| [f.type_key, f] }.flatten]
 end

@@ -7,7 +7,11 @@ class Field < ApplicationRecord
 
   belongs_to :form, class_name: "MetalForm", foreign_key: "form_id", touch: true
 
+  # Only use for specific fields
   has_many :choices, -> { order(position: :asc) }, dependent: :destroy, autosave: true
+  has_one :nested_form, as: :attachable, dependent: :destroy
+
+  acts_as_list
 
   validates :label,
             presence: true
@@ -22,28 +26,14 @@ class Field < ApplicationRecord
                     allow_nil: false
 
   def self.type_key
-    model_name.name.split("::").last.underscore
+    model_name.name.demodulize.underscore.to_sym
   end
 
   def type_key
     self.class.type_key
   end
 
-  def options_configurable?
-    options.is_a?(FieldOptions) && options.attributes.any?
-  end
-
-  def validations_configurable?
-    validations.is_a?(FieldOptions) && validations.attributes.any?
-  end
-
-  def attached_choices?
-    false
-  end
-
-  def attached_nested_form?
-    false
-  end
+  include Fields::Helper
 
   protected
 
