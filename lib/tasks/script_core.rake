@@ -85,7 +85,7 @@ namespace :script_core do
       end
 
       Dir.chdir(engine_root.join("bin")) do
-        sh("./mrbc -o enterprise_script_service.mrb #{lib_files.join(' ')}")
+        sh("./mrbc --remove-lv -o enterprise_script_service.mrb #{lib_files.join(' ')}")
       end
     end
 

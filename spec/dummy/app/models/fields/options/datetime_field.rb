@@ -105,7 +105,7 @@ module Fields::Options
         minutes_before_finish = self.minutes_before_finish.minutes
         if finish_to_now?
           finish_minutes_offset = finish_to_now_minutes_offset.minutes.to_i
-          timeliness[:on_or_after] = -> {
+          timeliness[:on_or_after] = lambda {
             Time.zone.now.change(sec: 0, usec: 0) + finish_minutes_offset - minutes_before_finish
           }
         elsif finish_to_time?
@@ -122,7 +122,7 @@ module Fields::Options
         minutes_since_start = self.minutes_since_start.minutes.to_i
         if start_from_now?
           start_minutes_offset = start_from_now_minutes_offset.minutes.to_i
-          timeliness[:on_or_before] = -> {
+          timeliness[:on_or_before] = lambda {
             Time.zone.now.change(sec: 0, usec: 0) + start_minutes_offset + minutes_since_start
           }
         elsif start_from_time?

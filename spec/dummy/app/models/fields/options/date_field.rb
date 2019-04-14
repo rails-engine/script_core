@@ -105,7 +105,7 @@ module Fields::Options
         days_before_finish = self.days_before_finish.days
         if finish_to_today?
           finish_days_offset = finish_to_today_days_offset.days
-          timeliness[:on_or_after] = -> {
+          timeliness[:on_or_after] = lambda {
             Time.zone.today + finish_days_offset - days_before_finish
           }
         elsif finish_to_date?
@@ -122,7 +122,7 @@ module Fields::Options
         days_since_start = self.days_since_start.days
         if start_from_today?
           start_days_offset = start_from_today_days_offset.days
-          timeliness[:on_or_before] = -> {
+          timeliness[:on_or_before] = lambda {
             Time.zone.today + start_days_offset + days_since_start
           }
         elsif start_from_date?
