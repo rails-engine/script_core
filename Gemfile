@@ -6,8 +6,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gemspec
 
 # Dummy app
-gem "rails", "~> 5.2"
-gem "sqlite3", "~> 1.3.6"
+gem "rails", "~> 6.0.0.beta3"
+gem "sqlite3"
 
 # Use Puma as the app server
 gem "puma"

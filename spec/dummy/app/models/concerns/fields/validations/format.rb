@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-module Concerns::Fields
+module Fields
   module Validations::Format
     extend ActiveSupport::Concern
 
     included do
-      embeds_one :format, class_name: "Concerns::Fields::Validations::Format::FormatOptions"
+      embeds_one :format, class_name: "Fields::Validations::Format::FormatOptions"
       accepts_nested_attributes_for :format
 
       after_initialize do

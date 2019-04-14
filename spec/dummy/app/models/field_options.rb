@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FieldOptions < DuckRecord::Base
+class FieldOptions < ActiveEntity::Base
   include FormCore::ActsAsDefaultValue
   include EnumAttributeLocalizable
 
@@ -18,14 +18,16 @@ class FieldOptions < DuckRecord::Base
   private
 
   def _assign_attribute(k, v)
-    return unless respond_to?("#{k}=")
-
-    public_send("#{k}=", v)
+    if self.class._embeds_reflections.has_key?(k)
+      public_send("#{k}_attributes=", v)
+    elsif respond_to?("#{k}=")
+      public_send("#{k}=", v)
+    end
   end
 
   class << self
     def _embeds_reflections
-      _reflections.select { |_, v| v.is_a? DuckRecord::Reflection::EmbedsAssociationReflection }
+      _reflections.select { |_, v| v.is_a? ActiveEntity::Reflection::EmbeddedAssociationReflection }
     end
 
     def model_version
@@ -49,7 +51,9 @@ class FieldOptions < DuckRecord::Base
         end.stringify_keys
 
       data = {root_key_for_serialization => serializable_hash}
-      data.reverse_merge! obj.raw_attributes if keeping_old_serialization
+      if keeping_old_serialization
+        data.reverse_merge! obj.raw_attributes
+      end
 
       YAML.dump(data)
     end
@@ -69,10 +73,14 @@ class FieldOptions < DuckRecord::Base
     def load_from_yaml(yaml)
       return new if yaml.blank?
 
-      return new unless yaml.is_a?(String) && /^---/.match?(yaml)
+      unless yaml.is_a?(String) && /^---/.match?(yaml)
+        return new
+      end
 
       decoded = YAML.safe_load(yaml, WHITELIST_CLASSES)
-      return new unless decoded.is_a? Hash
+      unless decoded.is_a? Hash
+        return new
+      end
 
       record = new decoded[root_key_for_serialization]
       record.raw_attributes = decoded.freeze
