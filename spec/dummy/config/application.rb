@@ -31,6 +31,13 @@ module Dummy
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
-    config.i18n.fallbacks = [I18n.default_locale]
+
+    Rails.autoloaders.main.ignore("#{Rails.root}/app/overrides")
+
+    config.to_prepare do
+      Dir.glob(Rails.root + "app/overrides/**/*_override*.rb").each do |c|
+        require_dependency(c)
+      end
+    end
   end
 end
