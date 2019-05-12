@@ -5,8 +5,8 @@ class Date
 
   private
 
-  def to_msgpack_with_packer(packer)
-    packer.write_array [year, month, day]
-    packer
-  end
+    def to_msgpack_with_packer(packer)
+      packer.write_array [year, month, day]
+      packer
+    end
 end

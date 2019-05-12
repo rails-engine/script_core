@@ -6,7 +6,7 @@ require "open3"
 RSpec.describe(ScriptCore) do
   it "evaluates a simple script" do
     result = ScriptCore.run(
-      input: {result: [26_803_196_617, 0.475]},
+      input: { result: [26_803_196_617, 0.475] },
       sources: [
         ["stdout", "@stdout_buffer = 'hello'"],
         ["foo", "@output = @input[:result]"]
@@ -32,7 +32,7 @@ RSpec.describe(ScriptCore) do
 
   it "exposes metrics" do
     result = ScriptCore.run(
-      input: {result: [26_803_196_617, 0.475]},
+      input: { result: [26_803_196_617, 0.475] },
       sources: [
         ["stdout", "@stdout_buffer = 'hello'"],
         ["foo", "@output = @input[:result]"]
@@ -49,7 +49,7 @@ RSpec.describe(ScriptCore) do
 
   it "exposes stat" do
     result = ScriptCore.run(
-      input: {result: [26_803_196_617, 0.475]},
+      input: { result: [26_803_196_617, 0.475] },
       sources: [
         ["stdout", "@stdout_buffer = 'hello'"],
         ["foo", "@output = @input[:result]"]
@@ -74,7 +74,7 @@ RSpec.describe(ScriptCore) do
     loops = max_loops(100_000)
 
     result = ScriptCore.run(
-      input: {result: [26_803_196_617, 0.475]},
+      input: { result: [26_803_196_617, 0.475] },
       sources: [
         ["stdout", "#{loops}.times {}"]
       ],
@@ -85,7 +85,7 @@ RSpec.describe(ScriptCore) do
     expect(result.stat.instructions).to eq(expected_instructions(loops))
 
     result_with_error = ScriptCore.run(
-      input: {result: [26_803_196_617, 0.475]},
+      input: { result: [26_803_196_617, 0.475] },
       sources: [
         ["stdout", "#{loops + 1}.times {}"]
       ],
@@ -102,7 +102,7 @@ RSpec.describe(ScriptCore) do
     loops = max_loops(given_quota)
 
     result = ScriptCore.run(
-      input: {result: [26_803_196_617, 0.475]},
+      input: { result: [26_803_196_617, 0.475] },
       sources: [
         ["stdout", "#{loops}.times {}"]
       ],
@@ -114,7 +114,7 @@ RSpec.describe(ScriptCore) do
     expect(result.stat.instructions).to eq(expected_instructions(loops))
 
     result_with_error = ScriptCore.run(
-      input: {result: [26_803_196_617, 0.475]},
+      input: { result: [26_803_196_617, 0.475] },
       sources: [
         ["stdout", "#{loops + 1}.times {}"]
       ],
@@ -130,7 +130,7 @@ RSpec.describe(ScriptCore) do
   it "checks that a given instruction quota is respected from a given source index" do
     quota = 15_000
     result = ScriptCore.run(
-      input: {result: [26_803_196_617, 0.475]},
+      input: { result: [26_803_196_617, 0.475] },
       sources: [
         ["ignore", "1000.times {}"], # if we count this one, we'd blow the 15k quota
         ["count", "1000.times {}"]
@@ -146,7 +146,7 @@ RSpec.describe(ScriptCore) do
 
   it "supports symbols stat" do
     result = ScriptCore.run(
-      input: {result: {value: 0.475}},
+      input: { result: { value: 0.475 } },
       sources: [
         ["stdout", "@stdout_buffer = 'hello'"],
         ["foo", "@output = @input[:result]"]
@@ -245,7 +245,7 @@ RSpec.describe(ScriptCore) do
 
   it "includes the stdout_buffer if it raises" do
     result = ScriptCore.run(
-      input: {result: [26_803_196_617, 0.475]},
+      input: { result: [26_803_196_617, 0.475] },
       sources: [
         ["stdout", "@stdout_buffer = 'hello'"],
         ["foo", "raise \"Ouch!\""]

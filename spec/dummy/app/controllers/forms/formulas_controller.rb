@@ -44,13 +44,13 @@ class Forms::FormulasController < Forms::ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_formula
-    @formula = @form.formulas.find(params[:id])
-  end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_formula
+      @formula = @form.formulas.find(params[:id])
+    end
 
-  # Only allow a trusted parameter "white list" through.
-  def formula_params
-    params.fetch(:formula, {}).permit(:name, :body)
-  end
+    # Only allow a trusted parameter "white list" through.
+    def formula_params
+      params.fetch(:formula, {}).permit(:name, :body)
+    end
 end

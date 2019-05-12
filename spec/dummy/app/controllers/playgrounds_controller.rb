@@ -38,7 +38,7 @@ class PlaygroundsController < ApplicationController
 
   private
 
-  def set_source
-    @source = params.fetch(:source, "")
-  end
+    def set_source
+      @source = params.fetch(:source, "")
+    end
 end

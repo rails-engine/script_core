@@ -8,7 +8,7 @@ namespace :script_core do
   namespace :engine do
     desc "Create a skeletal engine that can be customize at the path you specify"
     task :new do
-      ARGV.each { |a| task(a.to_sym) {} }
+      ARGV.each { |a| task(a.to_sym) { } }
 
       name = ARGV[1] || DEFAULT_ENGINE_NAME
       unless /\A[a-z_]+\Z/.match?(name)
@@ -27,7 +27,7 @@ namespace :script_core do
 
     desc "Build engine executables"
     task :build do
-      ARGV.each { |a| task(a.to_sym) {} }
+      ARGV.each { |a| task(a.to_sym) { } }
 
       name = ARGV[1] || DEFAULT_ENGINE_NAME
       unless /\A[a-z_]+\Z/.match?(name)
@@ -51,13 +51,13 @@ namespace :script_core do
       end
 
       Dir.chdir(SCRIPT_CORE_ROOT.join("ext/enterprise_script_service")) do
-        sh("#{env_vars} #{Rails.root.join('bin/bundle')} exec rake")
+        sh("#{env_vars} #{Rails.root.join('bin', 'bundle')} exec rake")
       end
     end
 
     desc "Compile engine lib"
     task :compile_lib do
-      ARGV.each { |a| task(a.to_sym) {} }
+      ARGV.each { |a| task(a.to_sym) { } }
 
       name = ARGV[1] || DEFAULT_ENGINE_NAME
       unless /\A[a-z_]+\Z/.match?(name)
@@ -91,7 +91,7 @@ namespace :script_core do
 
     desc "Clean engine compiled files"
     task :clean do
-      ARGV.each { |a| task(a.to_sym) {} }
+      ARGV.each { |a| task(a.to_sym) { } }
 
       name = ARGV[1] || DEFAULT_ENGINE_NAME
       unless /\A[a-z_]+\Z/.match?(name)
@@ -106,9 +106,7 @@ namespace :script_core do
       end
 
       bin_path = engine_root.join("bin")
-      if Dir.exist?(bin_path)
-        FileUtils.remove_dir engine_root.join("bin")
-      end
+      FileUtils.remove_dir engine_root.join("bin") if Dir.exist?(bin_path)
     end
   end
 end

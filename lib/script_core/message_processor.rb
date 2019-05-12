@@ -71,61 +71,61 @@ module ScriptCore
 
     private
 
-    def read(raw_message)
-      type, data = raw_message
-      case type
-      when :output then read_output(data)
-      when :error then read_error(data)
-      when :measurement then read_measurement(data)
-      when :stat then read_stat(data)
-      end
-    end
-
-    def read_output(data)
-      @output = data[:extracted]
-      @stdout = data[:stdout]
-    end
-
-    def read_error(data)
-      @errors <<
-        case data[:__type]
-        when :runtime
-          EngineRuntimeError.new(
-            data[:message],
-            guest_backtrace: data[:backtrace]
-          )
-        when :syntax
-          EngineSyntaxError.new(
-            data[:message],
-            filename: data[:filename],
-            line_number: data[:line_number],
-            column: data[:column]
-          )
-        when :unknown_type
-          EngineUnknownTypeError.new(type: data[:type])
-        when :unknown_ext
-          EngineUnknownExtError.new(type: data[:type])
-        else
-          EngineInternalError.new("unknown error: #{data}")
+      def read(raw_message)
+        type, data = raw_message
+        case type
+        when :output then read_output(data)
+        when :error then read_error(data)
+        when :measurement then read_measurement(data)
+        when :stat then read_stat(data)
         end
-    end
-
-    def read_measurement(data)
-      name, microseconds = *data
-      if @measurements.key?(name)
-        @measurements[name] += microseconds
-      else
-        @measurements[name] = microseconds
       end
-    end
 
-    def read_stat(data)
-      unless @stat == ScriptCore::Stat::Null
-        @errors << ScriptCore::DuplicateMessageError.new(
-          "duplicate stat message"
-        )
+      def read_output(data)
+        @output = data[:extracted]
+        @stdout = data[:stdout]
       end
-      @stat = ScriptCore::Stat.new(data)
-    end
+
+      def read_error(data)
+        @errors <<
+          case data[:__type]
+          when :runtime
+            EngineRuntimeError.new(
+              data[:message],
+              guest_backtrace: data[:backtrace]
+            )
+          when :syntax
+            EngineSyntaxError.new(
+              data[:message],
+              filename: data[:filename],
+              line_number: data[:line_number],
+              column: data[:column]
+            )
+          when :unknown_type
+            EngineUnknownTypeError.new(type: data[:type])
+          when :unknown_ext
+            EngineUnknownExtError.new(type: data[:type])
+          else
+            EngineInternalError.new("unknown error: #{data}")
+          end
+      end
+
+      def read_measurement(data)
+        name, microseconds = *data
+        if @measurements.key?(name)
+          @measurements[name] += microseconds
+        else
+          @measurements[name] = microseconds
+        end
+      end
+
+      def read_stat(data)
+        unless @stat == ScriptCore::Stat::Null
+          @errors << ScriptCore::DuplicateMessageError.new(
+            "duplicate stat message"
+          )
+        end
+        @stat = ScriptCore::Stat.new(data)
+      end
   end
 end

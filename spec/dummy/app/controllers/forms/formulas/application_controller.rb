@@ -7,13 +7,13 @@ module Forms
 
     protected
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_form
-      @form = Form.find(params[:form_id])
-    end
+      # Use callbacks to share common setup or constraints between actions.
+      def set_form
+        @form = Form.find(params[:form_id])
+      end
 
-    def set_formula
-      @formula = @form.formulas.find(params[:formula_id])
-    end
+      def set_formula
+        @formula = @form.formulas.find(params[:formula_id])
+      end
   end
 end

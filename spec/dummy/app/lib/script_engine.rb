@@ -21,7 +21,7 @@ module ScriptEngine
                     payload: payload
                   },
                   instruction_quota_start: instruction_quota_start,
-                  environment_variables: {"TZ" => Time.zone.name}
+                  environment_variables: { "TZ" => Time.zone.name }
     end
 
     def run_inline(string, payload: nil, instruction_quota_start: nil)

@@ -8,14 +8,14 @@ RSpec.describe(ScriptCore::MessageProcessor) do
   it "processes an output message" do
     io = StringIO.new(packer.pack([
                                     :output,
-                                    extracted: {dog: "fine"},
+                                    extracted: { dog: "fine" },
                                     stdout: "hello"
                                   ]))
 
     message_processor.process_all(io)
     expect(message_processor.to_result).to eq(
       ScriptCore::Result.new(
-        output: {dog: "fine"},
+        output: { dog: "fine" },
         stdout: "hello",
         stat: ScriptCore::Stat::Null,
         errors: [],
@@ -160,7 +160,7 @@ RSpec.describe(ScriptCore::MessageProcessor) do
         stdout: "",
         stat: ScriptCore::Stat::Null,
         errors: [],
-        measurements: {transmogrification: 14}
+        measurements: { transmogrification: 14 }
       )
     )
   end
@@ -184,7 +184,7 @@ RSpec.describe(ScriptCore::MessageProcessor) do
         stdout: "",
         stat: ScriptCore::Stat::Null,
         errors: [],
-        measurements: {transmogrification: 26}
+        measurements: { transmogrification: 26 }
       )
     )
   end

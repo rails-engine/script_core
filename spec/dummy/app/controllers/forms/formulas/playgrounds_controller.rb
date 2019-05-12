@@ -18,12 +18,12 @@ module Forms
 
     private
 
-    def set_virtual_model
-      @virtual_model = @form.to_virtual_model
-    end
+      def set_virtual_model
+        @virtual_model = @form.to_virtual_model
+      end
 
-    def form_record_params
-      params.fetch(:form_record, {}).permit!
-    end
+      def form_record_params
+        params.fetch(:form_record, {}).permit!
+      end
   end
 end

@@ -17,7 +17,7 @@ module ScriptCore
             environment_variables: {})
       packer = ScriptCore::Protocol.packer_factory.packer
 
-      payload = {input: input, sources: sources}
+      payload = { input: input, sources: sources }
       payload[:library] = instructions if instructions
       encoded = packer.pack(payload)
 

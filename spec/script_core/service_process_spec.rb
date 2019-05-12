@@ -2,7 +2,7 @@
 
 RSpec.describe(ScriptCore::ServiceProcess) do
   let(:pid) { rand(1 << 16) }
-  let(:environment_variables) { {"TZ" => "US/Pacific"} }
+  let(:environment_variables) { { "TZ" => "US/Pacific" } }
   let(:service_path) { "bin/my-subprocess" }
   let(:pipe_pairs) { [] }
 
@@ -52,7 +52,7 @@ RSpec.describe(ScriptCore::ServiceProcess) do
     expect(spawner)
       .to receive(:wait).once.with(pid, Process::WNOHANG).and_return(0)
     expect(spawner).to receive(:wait).never
-    expect(service_process.open {}).to eq(0)
+    expect(service_process.open { }).to eq(0)
   end
 
   it "optimistically tries to wait on the child without killing when raising" do
@@ -68,7 +68,7 @@ RSpec.describe(ScriptCore::ServiceProcess) do
     expect(spawner).to receive(:kill).once.with(9, pid)
     expect(spawner)
       .to receive(:wait).once.with(pid).and_return(0)
-    expect(service_process.open {}).to eq(0)
+    expect(service_process.open { }).to eq(0)
   end
 
   it "kills the child process if it has not terminated when raising" do
@@ -84,6 +84,6 @@ RSpec.describe(ScriptCore::ServiceProcess) do
     expect(spawner)
       .to receive(:wait).once.with(pid, Process::WNOHANG).and_return(nil)
     expect(spawner).to receive(:kill).once.with(9, pid).and_raise(Errno::ESRCH)
-    expect(service_process.open {}).to eq(-1)
+    expect(service_process.open { }).to eq(-1)
   end
 end

@@ -7,8 +7,8 @@ class Forms::ApplicationController < ApplicationController
 
   protected
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_form
-    @form = Form.find(params[:form_id])
-  end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_form
+      @form = Form.find(params[:form_id])
+    end
 end
