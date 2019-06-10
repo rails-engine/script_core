@@ -29,16 +29,22 @@ namespace :script_core do
     task :build do
       ARGV.each { |a| task(a.to_sym) { } }
 
-      name = ARGV[1] || DEFAULT_ENGINE_NAME
-      unless /\A[a-z_]+\Z/.match?(name)
-        puts "Must provide a valid engine name."
-        exit 1
-      end
+      path = Pathname.new(ENV["ENGINE_PATH"]).realpath rescue nil if ENV["ENGINE_PATH"].present?
+      engine_root =
+        if path
+          path
+        else
+          name = ARGV[1] || DEFAULT_ENGINE_NAME
+          unless /\A[a-z_]+\Z/.match?(name)
+            puts "Must provide a valid engine name."
+            exit 1
+          end
+          Rails.root.join(name)
+        end
 
-      engine_root = Rails.root.join(name)
       unless Dir.exist?(engine_root)
         puts "Engine home `#{engine_root}` doesn't exists."
-        puts "You should run `rake script_core:engine:new #{name}` to create it first."
+        puts "You should run `rake script_core:engine:new` to create it first."
         exit 1
       end
 
@@ -59,16 +65,22 @@ namespace :script_core do
     task :compile_lib do
       ARGV.each { |a| task(a.to_sym) { } }
 
-      name = ARGV[1] || DEFAULT_ENGINE_NAME
-      unless /\A[a-z_]+\Z/.match?(name)
-        puts "Must provide a valid engine name."
-        exit 1
-      end
+      path = Pathname.new(ENV["ENGINE_PATH"]).realpath rescue nil if ENV["ENGINE_PATH"].present?
+      engine_root =
+        if path
+          path
+        else
+          name = ARGV[1] || DEFAULT_ENGINE_NAME
+          unless /\A[a-z_]+\Z/.match?(name)
+            puts "Must provide a valid engine name."
+            exit 1
+          end
+          Rails.root.join(name)
+        end
 
-      engine_root = Rails.root.join(name)
       unless Dir.exist?(engine_root)
         puts "Engine home `#{engine_root}` doesn't exists."
-        puts "You should run `rake script_core:engine:new #{name}` to create it first."
+        puts "You should run `rake script_core:engine:new` to create it first."
         exit 1
       end
 
@@ -93,13 +105,19 @@ namespace :script_core do
     task :clean do
       ARGV.each { |a| task(a.to_sym) { } }
 
-      name = ARGV[1] || DEFAULT_ENGINE_NAME
-      unless /\A[a-z_]+\Z/.match?(name)
-        puts "Must provide a valid engine name."
-        exit 1
-      end
+      path = Pathname.new(ENV["ENGINE_PATH"]).realpath rescue nil if ENV["ENGINE_PATH"].present?
+      engine_root =
+        if path
+          path
+        else
+          name = ARGV[1] || DEFAULT_ENGINE_NAME
+          unless /\A[a-z_]+\Z/.match?(name)
+            puts "Must provide a valid engine name."
+            exit 1
+          end
+          Rails.root.join(name)
+        end
 
-      engine_root = Rails.root.join(name)
       unless Dir.exist?(engine_root)
         puts "Engine home `#{engine_root}` doesn't exists."
         exit 1
