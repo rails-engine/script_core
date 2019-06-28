@@ -43,3 +43,4 @@ gem "turbolinks", "~> 5"
 
 gem "rubocop"
 gem "rubocop-performance"
+gem "rubocop-rails"

@@ -29,7 +29,13 @@ namespace :script_core do
     task :build do
       ARGV.each { |a| task(a.to_sym) { } }
 
-      path = Pathname.new(ENV["ENGINE_PATH"]).realpath rescue nil if ENV["ENGINE_PATH"].present?
+      if ENV["ENGINE_PATH"].present?
+        path = begin
+                 Pathname.new(ENV["ENGINE_PATH"]).realpath
+               rescue StandardError
+                 nil
+               end
+      end
       engine_root =
         if path
           path
@@ -65,7 +71,13 @@ namespace :script_core do
     task :compile_lib do
       ARGV.each { |a| task(a.to_sym) { } }
 
-      path = Pathname.new(ENV["ENGINE_PATH"]).realpath rescue nil if ENV["ENGINE_PATH"].present?
+      if ENV["ENGINE_PATH"].present?
+        path = begin
+                 Pathname.new(ENV["ENGINE_PATH"]).realpath
+               rescue StandardError
+                 nil
+               end
+      end
       engine_root =
         if path
           path
@@ -105,7 +117,13 @@ namespace :script_core do
     task :clean do
       ARGV.each { |a| task(a.to_sym) { } }
 
-      path = Pathname.new(ENV["ENGINE_PATH"]).realpath rescue nil if ENV["ENGINE_PATH"].present?
+      if ENV["ENGINE_PATH"].present?
+        path = begin
+                 Pathname.new(ENV["ENGINE_PATH"]).realpath
+               rescue StandardError
+                 nil
+               end
+      end
       engine_root =
         if path
           path
