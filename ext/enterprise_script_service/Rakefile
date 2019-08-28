@@ -168,7 +168,7 @@ end
 
 namespace(:libseccomp) do
   def within_libseccomp
-    return unless RUBY_PLATFORM =~ /linux/
+    return unless RUBY_PLATFORM.match?(/linux/)
 
     Dir.chdir(LIBSECCOMP_DIR) do
       yield
