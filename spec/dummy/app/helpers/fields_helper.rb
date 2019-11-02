@@ -8,9 +8,9 @@ module FieldsHelper
   def field_label(form, field_name:)
     field_name = field_name.to_s.split(".").first.to_sym
 
-    form.fields.select do |field|
+    form.fields.find do |field|
       field.name == field_name
-    end.first&.label
+    end&.label
   end
 
   def fields_path
