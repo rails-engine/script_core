@@ -147,7 +147,8 @@ namespace(:mruby) do
     end
   end
 
-  task(:compile) do
+  # Workaround because it may compiling fail when changing gembox
+  task(compile: :clean) do
     within_mruby do
       sh("ruby", "./minirake")
     end
@@ -155,6 +156,7 @@ namespace(:mruby) do
 
   task(:clean) do
     within_mruby do
+      sh("rm", "../mruby_config.rb.lock") if File.exist?("../mruby_config.rb.lock")
       sh("ruby", "./minirake", "clean")
     end
   end
