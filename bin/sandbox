@@ -15,7 +15,7 @@ TIME_QUOTA = 1.0
 script = if ARGV.size > 0
   File.read(ARGV[0])
 else
-  STDIN.read
+  gets.chomp
 end
 
 result = ScriptCore.run(

@@ -12,6 +12,8 @@ bin/enterprise_script_service_tests.dSYM
 bin/mrbc
 spec/examples.txt
 
+ext/enterprise_script_service/mruby_config.rb.lock
+
 spec/dummy/db/*.sqlite3
 spec/dummy/db/*.sqlite3-journal
 spec/dummy/log/*.log

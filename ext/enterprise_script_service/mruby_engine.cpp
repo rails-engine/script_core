@@ -164,7 +164,7 @@ bool me_mruby_engine_get_quota_exception_raised(struct me_mruby_engine *self) {
 static void mruby_engine_code_fetch_hook(
   struct mrb_state* mrb,
   struct mrb_irep *irep,
-  mrb_code *pc,
+  const mrb_code *pc,
   mrb_value *regs)
 {
   (void)irep;
@@ -202,7 +202,7 @@ struct me_mruby_engine *me_mruby_engine_new(
   }
 
   mrb_define_class(self->state, "ExitException", mrb_class_get(self->state, "Exception"));
-  mrb_define_method(self->state , self->state->kernel_module, "exit", mruby_engine_exit, 1);
+  mrb_define_method(self->state , self->state->kernel_module, "exit", mruby_engine_exit, MRB_ARGS_NONE());
 
   self->instruction_quota = instruction_quota;
   self->instruction_count = 0;

@@ -59,7 +59,7 @@ RSpec.describe(ScriptCore) do
     expect(result.stat.instructions).to eq(8)
   end
 
-  SCRIPT_SETUP_INSTRUCTION_COUNT = 15
+  SCRIPT_SETUP_INSTRUCTION_COUNT = 14
   INSTRUCTION_COUNT_PER_LOOP = 14 # For .times {}
 
   def expected_instructions(loops)
