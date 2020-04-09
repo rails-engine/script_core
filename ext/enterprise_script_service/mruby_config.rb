@@ -38,6 +38,12 @@ end
 MRuby::CrossBuild.new("sandbox") do |conf|
   toolchain(:gcc)
 
+  begin
+    conf.host_target = `gcc -dumpmachine`.strip
+  rescue Errno::ENOENT
+    puts "Run `gcc -dumpmachine` failed, unable to obtain arch info, will not set `host_target`"
+  end
+
   enable_debug
 
   conf.gembox(mruby_engine_gembox_path)
