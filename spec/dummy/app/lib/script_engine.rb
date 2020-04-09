@@ -25,7 +25,7 @@ module ScriptEngine
     end
 
     def run_inline(string, payload: nil, instruction_quota_start: nil)
-      run "Output.value = module Main\n#{string}\nend",
+      run "Output.value = class Object\n#{string}\nend",
           payload: payload,
           instruction_quota_start: instruction_quota_start
     end
