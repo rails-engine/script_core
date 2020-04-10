@@ -13,16 +13,22 @@ I want to make these changes:
 
 - Toolchain
     - [x] Expose mruby build config to allow developer modify mruby-engine executable, e.g: add some gems
-    - [x] Expose `mrbc` to allow developer precompile mruby library that would inject to sandboxie
-    - [ ] Watching and auto compiling mruby library when it change
+    - [x] Expose `mrbc` to allow developer precompile mruby library that would inject to sandbox
     - [x] Rake tasks for compiling mruby-engine & mruby library
+    - [ ] Watching and auto compiling mruby library when it change
     - [ ] Capistrano recipe
 - Practice
     - [x] Rails generator for mruby library
     - [x] Find a good place for engines
     - [ ] Find a good way to working with timezone on mruby side
     - [ ] Find a good way to working with `BigDecimal` & `Date` (mruby doesn't have these) on mruby side
-    - [ ] Consider about IO operations
+
+## Restrictions
+
+- We enable `MRB_DISABLE_STDIO` flag when compiling mruby,
+  which means the sandbox will not support gems which dependent `mruby-io` or `stdio.h`,
+  the result is you can not do any HTTP request, read and write files in the sandbox,
+  you may consider preparing data on Ruby side and pass them to the sandbox.
 
 ## Demo
 

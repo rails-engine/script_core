@@ -1,5 +1,6 @@
 .generators
 .idea
+.rakeTasks
 .vagrant
 .bundle
 *.gem
