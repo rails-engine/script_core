@@ -1,11 +1,7 @@
 # frozen_string_literal: true
 
 module ScriptCore
-  Result = Struct.new(:output, :stdout, :stat, :measurements, :errors) do
-    def initialize(output:, stdout:, stat:, measurements:, errors:)
-      super(output, stdout, stat, measurements, errors)
-    end
-
+  Result = Struct.new(:output, :stdout, :stat, :measurements, :errors, keyword_init: true) do
     def success?
       errors.empty?
     end

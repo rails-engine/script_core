@@ -35,11 +35,12 @@ Gem::Specification.new do |spec|
   spec.extensions = ["ext/enterprise_script_service/Rakefile"]
   spec.homepage = "https://github.com/rails-engine/script_core"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 2.4"
+  spec.required_ruby_version = ">= 2.5"
 
   spec.add_dependency("msgpack", "~> 1.0")
   spec.add_dependency("rake-compiler", "~> 1.0")
 
+  spec.add_development_dependency("bundler")
   spec.add_development_dependency("rake", "~> 12.0")
   spec.add_development_dependency("rspec", "~> 3.5")
 end

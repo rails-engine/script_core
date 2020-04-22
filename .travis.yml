@@ -1,6 +1,7 @@
 language: ruby
 
 rvm:
-  - 2.6.2
+  - 2.5.8
+  - 2.7.1
 
 script: bundle exec rake compile

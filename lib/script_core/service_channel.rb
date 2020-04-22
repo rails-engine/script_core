@@ -13,6 +13,7 @@ module ScriptCore
       in_writer.write(buffer)
       nil
     rescue Errno::EPIPE
+      nil
     end
 
     def read(*args)

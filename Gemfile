@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gemspec
 
 # Dummy app
-gem "rails", "~> 6.0.0"
+gem "rails", "~> 6.0"
 gem "sqlite3"
 
 # Use Puma as the app server
@@ -19,7 +19,7 @@ gem "web-console", group: :development
 gem "byebug", group: %i[development test]
 
 # To support ES6
-gem "sprockets", "~> 4.0.0.beta4"
+gem "sprockets", "~> 4.0.0"
 # Support ES6
 gem "babel-transpiler"
 # Use SCSS for stylesheets
@@ -32,7 +32,7 @@ gem "form_core"
 
 gem "acts_as_list"
 gem "timeliness-i18n"
-gem "validates_timeliness", "~> 5.0.0.alpha1"
+gem "validates_timeliness", "~> 5.0.0.beta1"
 
 gem "bulma-rails"
 gem "jquery-rails"
