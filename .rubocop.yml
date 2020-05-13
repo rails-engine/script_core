@@ -109,6 +109,9 @@ Layout/EmptyLinesAroundModuleBody:
 Layout/FirstArgumentIndentation:
   Enabled: true
 
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
 # Use Ruby >= 1.9 syntax for hashes. Prefer { a: :b } over { :a => :b }.
 Style/HashSyntax:
   Enabled: true
@@ -266,6 +269,9 @@ Style/ColonMethodCall:
   Enabled: true
 
 Style/TrivialAccessors:
+  Enabled: true
+
+Style/SlicingWithRange:
   Enabled: true
 
 Performance/FlatMap:
