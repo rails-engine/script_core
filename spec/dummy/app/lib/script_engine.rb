@@ -9,10 +9,12 @@ module ScriptEngine
     end
 
     def precompile(code, with_lib: true)
-      wrapped_code = ""
-      wrapped_code += "prepare;" if with_lib
-      wrapped_code += "Output.value = class Object\n#{code}\nend;"
-      wrapped_code += "pack_output" if with_lib
+      wrapped_code =
+        if with_lib
+          "prepare; Output.value = class Object\n#{code}\nend; pack_output"
+        else
+          code
+        end
 
       mrbc_executable = ENGINE_PATH.join("bin/mrbc").realpath
       tmp_dir = Rails.root.join("tmp")
