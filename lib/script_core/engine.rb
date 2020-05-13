@@ -21,15 +21,34 @@ module ScriptCore
       @instructions = File.exist?(preload_instructions_path) ? File.binread(preload_instructions_path) : nil
     end
 
-    def eval(sources, input: nil, instruction_quota_start: nil, environment_variables: {})
+    def eval(
+      sources, input: {}, environment_variables: {},
+      instruction_quota: nil, instruction_quota_start: nil, memory_quota: nil, timeout: nil
+    )
       @executable.run(
-        input: input || {},
+        input: input,
         sources: sources,
         instructions: @instructions,
-        timeout: @timeout,
-        instruction_quota: @instruction_quota,
+        timeout: timeout || @timeout,
+        instruction_quota: instruction_quota || @instruction_quota,
         instruction_quota_start: instruction_quota_start || @instruction_quota_start,
-        memory_quota: @memory_quota,
+        memory_quota: memory_quota || @memory_quota,
+        environment_variables: environment_variables
+      )
+    end
+
+    def eval_mrb(
+      binary_mrb, input: {}, environment_variables: {},
+      instruction_quota: nil, instruction_quota_start: nil, memory_quota: nil, timeout: nil
+    )
+      @executable.run(
+        input: input,
+        sources: [],
+        instructions: binary_mrb,
+        timeout: timeout || @timeout,
+        instruction_quota: instruction_quota || @instruction_quota,
+        instruction_quota_start: instruction_quota_start || @instruction_quota_start,
+        memory_quota: memory_quota || @memory_quota,
         environment_variables: environment_variables
       )
     end

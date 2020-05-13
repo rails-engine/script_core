@@ -12,9 +12,10 @@ module ScriptCore
       @executable_path = executable_path.to_s
     end
 
-    def run(input: {}, sources:, instructions: nil,
-            timeout: 1, instruction_quota: 100_000, instruction_quota_start: 0, memory_quota: 8 << 20,
-            environment_variables: {})
+    def run(
+      input: {}, environment_variables: {}, sources:, instructions: nil,
+      timeout: 1, instruction_quota: 100_000, instruction_quota_start: 0, memory_quota: 8 << 20
+    )
       packer = ScriptCore::Protocol.packer_factory.packer
 
       payload = { input: input, sources: sources }
