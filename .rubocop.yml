@@ -19,15 +19,24 @@ Rails:
   Enabled: true
 
 Layout/LineLength:
-  Max: 150
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 30
 
 Metrics/MethodLength:
   Max: 100
 
 Metrics/BlockLength:
-  Max: 50
+  Max: 60
 
 Metrics/ClassLength:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Style/IfUnlessModifier:
   Enabled: false
 
 Style/GuardClause:
@@ -94,6 +103,9 @@ Layout/EmptyLineAfterMagicComment:
 Layout/EmptyLinesAroundBlockBody:
   Enabled: true
 
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
 # In a regular class definition, no empty lines around the body.
 Layout/EmptyLinesAroundClassBody:
   Enabled: true
@@ -107,9 +119,6 @@ Layout/EmptyLinesAroundModuleBody:
   Enabled: true
 
 Layout/FirstArgumentIndentation:
-  Enabled: true
-
-Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
 
 # Use Ruby >= 1.9 syntax for hashes. Prefer { a: :b } over { :a => :b }.
@@ -210,6 +219,9 @@ Layout/SpaceAroundMethodCallOperator:
 Style/RedundantPercentQ:
   Enabled: true
 
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
 Lint/AmbiguousOperator:
   Enabled: true
 
@@ -264,14 +276,14 @@ Style/Semicolon:
   Enabled: true
   AllowAsExpressionSeparator: true
 
+Style/SlicingWithRange:
+  Enabled: true
+
 # Prefer Foo.method over Foo::method
 Style/ColonMethodCall:
   Enabled: true
 
 Style/TrivialAccessors:
-  Enabled: true
-
-Style/SlicingWithRange:
   Enabled: true
 
 Performance/FlatMap:
