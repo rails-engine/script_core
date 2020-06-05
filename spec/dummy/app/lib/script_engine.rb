@@ -87,7 +87,6 @@ module ScriptEngine
                       instruction_quota_start: instruction_quota_start,
                       memory_quota: memory_quota,
                       timeout: timeout
-
     end
   end
 end
