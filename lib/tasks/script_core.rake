@@ -63,7 +63,9 @@ namespace :script_core do
       end
 
       Dir.chdir(SCRIPT_CORE_ROOT.join("ext/enterprise_script_service")) do
-        sh("#{env_vars} #{Rails.root.join('bin', 'bundle')} exec rake")
+        bundle_stub_path = Rails.root.join("bin", "bundle")
+        bundle_cmd = File.exists?(bundle_stub_path) ? bundle_stub_path : "bundle"
+        sh("#{env_vars} #{bundle_cmd} exec rake")
       end
     end
 
