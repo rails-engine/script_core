@@ -23,12 +23,18 @@ I want to make these changes:
     - [ ] Find a good way to working with timezone on mruby side
     - [ ] Find a good way to working with `BigDecimal` & `Date` (mruby doesn't have these) on mruby side
 
-## Restrictions
+## limitation
 
 - We enable `MRB_DISABLE_STDIO` flag when compiling mruby,
   which means the sandbox will not support gems which dependent `mruby-io` or `stdio.h`,
   the result is you can not do any HTTP request, read and write files in the sandbox,
   you may consider preparing data on Ruby side and pass them to the sandbox.
+
+## Help wanted
+
+I'm not familiar with C/CPP, so I can't improve ESS (in `ext/enterprise_script_service`),
+
+Currently there're too much warnings on compiling, hope some one could help to resolve them.
 
 ## Demo
 
