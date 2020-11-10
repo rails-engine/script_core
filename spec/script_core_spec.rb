@@ -13,9 +13,22 @@ RSpec.describe(ScriptCore) do
       ],
       timeout: 1000
     )
+    expect(result.errors).to eq([])
     expect(result.success?).to be(true)
     expect(result.output).to eq([26_803_196_617, 0.475])
     expect(result.stdout).to eq("hello")
+  end
+
+  it "breaks out of a proc just fine" do
+    result = ScriptCore.run(
+      input: {},
+      sources: [
+        ["proc", "[1, 2].each { |i| break }"],
+      ],
+      timeout: 1000,
+    )
+    expect(result.errors).to eq([])
+    expect(result.success?).to be(true)
   end
 
   it "round trips binary strings" do
