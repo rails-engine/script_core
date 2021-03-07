@@ -11,7 +11,7 @@ include_directories(
 )
 
 add_definitions(
-        -DMRB_ENABLE_DEBUG_HOOK
+        -DMRB_USE_DEBUG_HOOK
         -DMRB_INT64
         -DMRB_UTF8_STRING
         -DMRB_WORD_BOXING
