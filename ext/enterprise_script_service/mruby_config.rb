@@ -2,7 +2,7 @@
 
 require_relative("./flags")
 
-mruby_engine_gembox_path =
+def mruby_engine_gembox_path
   if ENV["MRUBY_ENGINE_GEMBOX_PATH"] && File.exist?(ENV["MRUBY_ENGINE_GEMBOX_PATH"])
     raise "`#{ENV['MRUBY_ENGINE_GEMBOX_PATH']}` require `.gembox` extension" unless ENV["MRUBY_ENGINE_GEMBOX_PATH"].end_with?(".gembox")
 
@@ -10,6 +10,7 @@ mruby_engine_gembox_path =
   else
     Pathname.new(__FILE__).dirname.join("mruby_engine")
   end
+end
 
 # https://github.com/mruby/mruby/blob/master/doc/guides/compile.md
 
@@ -21,8 +22,6 @@ MRuby::Build.new do |conf|
   conf.gembox(mruby_engine_gembox_path)
   conf.gem(core: "mruby-bin-mirb")
   conf.gem(core: "mruby-bin-mruby")
-
-  conf.bins = %w[mrbc mruby]
 
   conf.cc do |cc|
     cc.flags += %w[-fPIC]
@@ -47,8 +46,6 @@ MRuby::CrossBuild.new("sandbox") do |conf|
   enable_debug
 
   conf.gembox(mruby_engine_gembox_path)
-
-  conf.bins = []
 
   conf.cc do |cc|
     cc.flags += %w[-fPIC]

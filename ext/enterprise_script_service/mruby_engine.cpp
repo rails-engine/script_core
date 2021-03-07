@@ -163,7 +163,7 @@ bool me_mruby_engine_get_quota_exception_raised(struct me_mruby_engine *self) {
 
 static void mruby_engine_code_fetch_hook(
   struct mrb_state* mrb,
-  struct mrb_irep *irep,
+  const struct mrb_irep *irep,
   const mrb_code *pc,
   mrb_value *regs)
 {
