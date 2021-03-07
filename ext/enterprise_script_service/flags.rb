@@ -26,7 +26,7 @@ module Flags
     def io_safe_defines
       %w[
         _GNU_SOURCE
-        MRB_ENABLE_DEBUG_HOOK
+        MRB_USE_DEBUG_HOOK
         MRB_INT64
         MRB_UTF8_STRING
         MRB_WORD_BOXING
@@ -35,7 +35,7 @@ module Flags
     end
 
     def defines
-      io_safe_defines + %w[MRB_DISABLE_STDIO]
+      io_safe_defines + %w[MRB_NO_STDIO]
     end
   end
 end
