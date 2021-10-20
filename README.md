@@ -11,6 +11,7 @@ The `enterprise_script_engine` executable ingests the input from `stdin` as a ms
 
 I want to make these changes:
 
+- Use latest mruby
 - Toolchain
     - [x] Expose mruby build config to allow developer modify mruby-engine executable, e.g: add some gems
     - [x] Expose `mrbc` to allow developer precompile mruby library that would inject to sandbox
