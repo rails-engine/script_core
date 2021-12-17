@@ -6,13 +6,13 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 gemspec
 
 # Dummy app
-gem "rails", "~> 6.0"
+gem "rails", "~> 6.1"
 gem "sqlite3"
 
 # Use Puma as the app server
 gem "puma"
 
-gem "listen", "~> 3.1"
+gem "listen"
 # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
 gem "web-console", group: :development
 # Call "byebug" anywhere in the code to stop execution and get a debugger console
