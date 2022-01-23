@@ -11,3 +11,66 @@
 [submodule "tests/googletest"]
 	path = tests/googletest
 	url = https://github.com/google/googletest.git
+[submodule "ext/enterprise_script_service/boost/assert"]
+	path = ext/enterprise_script_service/boost/assert
+	url = https://github.com/boostorg/assert.git
+[submodule "ext/enterprise_script_service/boost/numeric_conversion"]
+	path = ext/enterprise_script_service/boost/numeric_conversion
+	url = https://github.com/boostorg/numeric_conversion.git
+[submodule "ext/enterprise_script_service/boost/variant"]
+	path = ext/enterprise_script_service/boost/variant
+	url = https://github.com/boostorg/variant.git
+[submodule "ext/enterprise_script_service/boost/utility"]
+	path = ext/enterprise_script_service/boost/utility
+	url = https://github.com/boostorg/utility.git
+[submodule "ext/enterprise_script_service/boost/fusion"]
+	path = ext/enterprise_script_service/boost/fusion
+	url = https://github.com/boostorg/fusion.git
+[submodule "ext/enterprise_script_service/boost/optional"]
+	path = ext/enterprise_script_service/boost/optional
+	url = https://github.com/boostorg/optional.git
+[submodule "ext/enterprise_script_service/boost/predef"]
+	path = ext/enterprise_script_service/boost/predef
+	url = https://github.com/boostorg/predef.git
+[submodule "ext/enterprise_script_service/boost/preprocessor"]
+	path = ext/enterprise_script_service/boost/preprocessor
+	url = https://github.com/boostorg/preprocessor.git
+[submodule "ext/enterprise_script_service/boost/config"]
+	path = ext/enterprise_script_service/boost/config
+	url = https://github.com/boostorg/config.git
+[submodule "ext/enterprise_script_service/boost/core"]
+	path = ext/enterprise_script_service/boost/core
+	url = https://github.com/boostorg/core.git
+[submodule "ext/enterprise_script_service/boost/type_traits"]
+	path = ext/enterprise_script_service/boost/type_traits
+	url = https://github.com/boostorg/type_traits.git
+[submodule "ext/enterprise_script_service/boost/mpl"]
+	path = ext/enterprise_script_service/boost/mpl
+	url = https://github.com/boostorg/mpl.git
+[submodule "ext/enterprise_script_service/boost/throw_exception"]
+	path = ext/enterprise_script_service/boost/throw_exception
+	url = https://github.com/boostorg/throw_exception.git
+[submodule "ext/enterprise_script_service/boost/static_assert"]
+	path = ext/enterprise_script_service/boost/static_assert
+	url = https://github.com/boostorg/static_assert.git
+[submodule "ext/enterprise_script_service/boost/io"]
+	path = ext/enterprise_script_service/boost/io
+	url = https://github.com/boostorg/io.git
+[submodule "ext/enterprise_script_service/boost/type_index"]
+	path = ext/enterprise_script_service/boost/type_index
+	url = https://github.com/boostorg/type_index.git
+[submodule "ext/enterprise_script_service/boost/container_hash"]
+	path = ext/enterprise_script_service/boost/container_hash
+	url = https://github.com/boostorg/container_hash.git
+[submodule "ext/enterprise_script_service/boost/integer"]
+	path = ext/enterprise_script_service/boost/integer
+	url = https://github.com/boostorg/integer.git
+[submodule "ext/enterprise_script_service/boost/container"]
+	path = ext/enterprise_script_service/boost/container
+	url = https://github.com/boostorg/container.git
+[submodule "ext/enterprise_script_service/boost/detail"]
+	path = ext/enterprise_script_service/boost/detail
+	url = https://github.com/boostorg/detail.git
+[submodule "ext/enterprise_script_service/boost/move"]
+	path = ext/enterprise_script_service/boost/move
+	url = https://github.com/boostorg/move.git
