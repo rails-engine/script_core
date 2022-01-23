@@ -35,7 +35,7 @@ module Flags
     end
 
     def defines
-      io_safe_defines + %w[MRB_NO_STDIO]
+      io_safe_defines + %w[MRB_NO_STDIO MRB_WORDBOX_NO_FLOAT_TRUNCATE MRB_USE_RO_DATA_P_ETEXT]
     end
   end
 end

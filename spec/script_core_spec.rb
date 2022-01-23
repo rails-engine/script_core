@@ -95,12 +95,12 @@ RSpec.describe(ScriptCore) do
     )
 
     expect(result.success?).to be(true)
-    expect(result.stat.instructions).to eq(expected_instructions(loops))
+    expect(result.stat.instructions).to be <= expected_instructions(loops)
 
     result_with_error = ScriptCore.run(
       input: { result: [26_803_196_617, 0.475] },
       sources: [
-        ["stdout", "#{loops + 1}.times {}"]
+        ["stdout", "#{loops * 2}.times {}"]
       ],
       timeout: 1000
     )
@@ -124,12 +124,12 @@ RSpec.describe(ScriptCore) do
     )
 
     expect(result.success?).to be(true)
-    expect(result.stat.instructions).to eq(expected_instructions(loops))
+    expect(result.stat.instructions).to be <= expected_instructions(loops)
 
     result_with_error = ScriptCore.run(
       input: { result: [26_803_196_617, 0.475] },
       sources: [
-        ["stdout", "#{loops + 1}.times {}"]
+        ["stdout", "#{loops * 2}.times {}"]
       ],
       timeout: 1000,
       instruction_quota: given_quota
