@@ -28,6 +28,7 @@ gem "sassc-rails"
 gem "uglifier", ">= 1.3.0"
 
 gem "cocoon"
+gem "activeentity"
 gem "form_core"
 
 gem "acts_as_list"
