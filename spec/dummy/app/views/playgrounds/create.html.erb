@@ -33,7 +33,11 @@
           <dd><%= @result.stat.instructions %></dd>
           <dt>Memory</dt>
           <dd><%= @result.stat.memory %> B</dd>
-          <dt>Time</dt>
+          <dt>Execution time</dt>
+          <dd><%= @result.stat.execution_time_us %> µs</dd>
+          <dt>Mesurements (µs)</dt>
+          <dd><%= @result.measurements %></dd>
+          <dt>Total Time</dt>
           <dd><%= @result.measurements.values.reduce(&:+) %> µs</dd>
         </dl>
       </div>
