@@ -16,6 +16,7 @@
 #include <sys/prctl.h>
 #include <sys/resource.h>
 #include <linux/seccomp.h>
+#include <linux/futex.h>
 
 void reserve_memory() {
   mallopt(M_TRIM_THRESHOLD, 64 * MiB);
@@ -47,6 +48,12 @@ void sandbox() {
   check_seccomp(seccomp_rule_add_exact(
     context, SCMP_ACT_ALLOW, SCMP_SYS(write), 1,
     SCMP_A0(SCMP_CMP_EQ, STDERR_FILENO)));
+
+  // Happens on occasion; this should be completely benign.
+  check_seccomp(seccomp_rule_add_exact(
+    context, SCMP_ACT_ALLOW, SCMP_SYS(futex), 2,
+    SCMP_A0(SCMP_CMP_NE, 0),
+    SCMP_A1(SCMP_CMP_EQ, FUTEX_WAKE_PRIVATE)));
 
   check_seccomp(seccomp_load(context));
   seccomp_release(context);
