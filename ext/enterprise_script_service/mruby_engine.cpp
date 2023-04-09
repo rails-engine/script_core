@@ -102,7 +102,7 @@ void me_mruby_engine::check_exception() {
     return;
   }
 
-  auto ruby_backtrace = mrb_exc_backtrace(state, exception);
+  auto ruby_backtrace = mrb_funcall(state, exception, "backtrace", 0);
   check_exception();
   if (mrb_type(ruby_backtrace) != MRB_TT_ARRAY) {
     leave(status_code::type_error);
