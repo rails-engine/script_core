@@ -62,14 +62,6 @@ else
   [].freeze
 end
 
-BOOST_INCLUDES =
-  %w[
-    core detail move type_traits mpl throw_exception config static_assert io type_index container container_hash integer
-    assert numeric_conversion variant utility fusion optional predef preprocessor
-  ].map do |component|
-    "-Iboost/#{component}/include"
-  end
-
 directory(SERVICE_EXECUTABLE_DIR)
 
 file(SERVICE_EXECUTABLE => [
@@ -83,7 +75,7 @@ file(SERVICE_EXECUTABLE => [
     "--std=c++11",
     "-Wall",
     "-Wextra",
-    *BOOST_INCLUDES,
+    "-DMSGPACK_NO_BOOST",
     "-Imsgpack/include",
     "-Imruby/include",
     "-L#{MRUBY_LIB_DIR}",
@@ -112,7 +104,7 @@ file(SERVICE_TESTS_EXECUTABLE => [
     "--std=c++11",
     "-Wall",
     "-Wextra",
-    *BOOST_INCLUDES,
+    "-DMSGPACK_NO_BOOST",
     "-Imsgpack/include",
     "-Imruby/include",
     "-I#{GOOGLE_TEST_DIR}/include",
